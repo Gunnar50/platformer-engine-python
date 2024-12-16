@@ -14,7 +14,7 @@ class ComponentManager:  # Singleton
   
   This is a singleton component that handles all the system and game components
   """
-  __instance: 'ComponentManager | None' = None
+  __instance = None
 
   def __new__(cls, *args, **kwargs):
     if cls.__instance is None:
@@ -76,7 +76,7 @@ class SystemComponent(Component):  # Singleton
   
   Render, Camera, Inputs, Assets, etc.
   """
-  __instance: 'SystemComponent | None' = None
+  __instance = None
 
   def __new__(cls, *args, **kwargs):
     if cls.__instance is None:
