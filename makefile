@@ -17,3 +17,8 @@ fix:
 clean:
 	rm -rf __pycache__ *.pyc
 
+run:
+	python main.py
+
+test:
+	pytest --disable-warnings $(ARGS) -vv -s
