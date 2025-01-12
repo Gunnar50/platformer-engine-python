@@ -1,0 +1,19 @@
+{
+  "name": "carrot",
+  "group": "crop",
+  "layer": 1,
+  "images": [
+    "carrot_0.png",
+    "carrot_1.png",
+    "carrot_2.png",
+    "carrot_3.png"
+  ],
+  "tile_type": "soil",
+  "stages": [
+    1,
+    2,
+    3
+  ],
+  "grow_time": 100,
+  "dry_out_time": 50
+}
