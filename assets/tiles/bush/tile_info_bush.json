@@ -1,0 +1,13 @@
+{
+  "name": "bush",
+  "group": "offgrid",
+  "layer": 0,
+  "images": [
+    "bush_1.png",
+    "bush_2.png",
+    "bush_3.png",
+    "plant_1.png",
+    "plant_2.png"
+  ],
+  "tile_type": "bush"
+}

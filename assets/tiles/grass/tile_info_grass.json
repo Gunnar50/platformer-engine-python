@@ -3,7 +3,9 @@
   "group": "tile",
   "layer": 0,
   "images": [
-    "grass.png"
+    "grass_middle.png",
+    "grass_left.png",
+    "grass_right.png"
   ],
   "tile_type": "grass"
 }

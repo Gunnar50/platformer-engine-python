@@ -1,0 +1,12 @@
+{
+  "name": "dirt",
+  "group": "tile",
+  "layer": 0,
+  "images": [
+    "dirt_middle_1.png",
+    "dirt_middle_1.png",
+    "dirt_left.png",
+    "dirt_right.png"
+  ],
+  "tile_type": "dirt"
+}
