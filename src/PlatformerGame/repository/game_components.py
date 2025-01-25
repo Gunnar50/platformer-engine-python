@@ -1,14 +1,19 @@
 import dataclasses
 import enum
-import random
-from typing import Iterable, Union
 
 import pygame
 
 from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PlatformerGame.scene.tile import Tile
 from src.PlatformerGame.scene.world_grid import WorldGrid
+from src.PyEng.components.components import GameComponent
 from src.shared.hash_registry import Registrable
+
+
+@dataclasses.dataclass
+class Position(GameComponent):
+  x: int
+  y: int
 
 
 class TileType(enum.Enum):
@@ -46,10 +51,6 @@ class Blueprint(Registrable):
 
 @dataclasses.dataclass
 class EntityBlueprint(Blueprint):
-  tile_type: TileType
-  stages: list[int]
-  grow_time: int
-  dry_out_time: int
 
   def create_instance(self):
     pass
@@ -66,45 +67,10 @@ class ItemBlueprint(Blueprint):
 class TileBlueprint(Blueprint):
   tile_type: TileType
 
-  def create_instance(self, position: tuple[int, int], grid: WorldGrid) -> Tile:
-    return Tile(position, grid, self)
-
-
-@dataclasses.dataclass
-class Crop(EntityBlueprint):
-  # Grow time is amount in seconds
-  grow_time: Iterable[int]
-  amount: Union[int, Iterable[int]]
-  next_growth_time: float = 0.0
-
-  def __post_init__(self):
-    self.current_stage = 0
-    if isinstance(self.amount, Iterable):
-      self.amount = random.randint(*self.amount)
-    self.current_stage_time = 0.0
-    self.ready_stage = len(self.images) - 1
-    self.generate_stage_duration()
-
-  def generate_stage_duration(self):
-    self.next_growth_time = random.uniform(*self.grow_time) * 1000
-
-  def is_fully_grown(self):
-    return self.current_stage == self.ready_stage
-
-  def update(self):
-    # TODO - get DT from window
-    dt = 1.0
-
-    # Check if is fully grown
-    if self.is_fully_grown():
-      return
-
-    self.current_stage_time += dt
-
-    if self.current_stage_time >= self.next_growth_time:
-      self.next_stage()
-
-  def next_stage(self):
-    self.current_stage += 1
-    self.current_stage_time = 0.0
-    self.generate_stage_duration()
+  def create_instance(
+      self,
+      position_x: int,
+      position_y: int,
+      grid: WorldGrid,
+  ) -> Tile:
+    return Tile(Position(position_x, position_y), grid, self)
