@@ -6,6 +6,7 @@ import pygame
 from src.PlatformerGame.main.configs.build_config import BuildConfig
 
 if TYPE_CHECKING:
+  from src.PlatformerGame.repository.game_components import Position
   from src.PlatformerGame.repository.game_components import (TileBlueprint,
                                                              TileType)
   from src.PlatformerGame.scene.world_grid import WorldGrid
@@ -30,18 +31,13 @@ class Direction(enum.Enum):
 
 
 class GameObject:
-  offset_x = (BuildConfig.window_width -
-              (BuildConfig.map_width * BuildConfig.tile_width // 2) +
-              (BuildConfig.map_height * BuildConfig.tile_width // 2)) // 2
-  offset_y = (BuildConfig.window_height -
-              (BuildConfig.map_height * BuildConfig.tile_height // 2)) // 2
 
   def __init__(
       self,
-      position: tuple[int, int],
+      position: 'Position',
       world_grid: 'WorldGrid',
   ) -> None:
-    self.x, self.y = position
+    self.position = position
     self.grid = world_grid
 
 
@@ -49,13 +45,13 @@ class Tile(GameObject):
 
   def __init__(
       self,
-      position: tuple[int, int],
+      position: 'Position',
       world_grid: 'WorldGrid',
       components: 'TileBlueprint',
   ) -> None:
     GameObject.__init__(self, position, world_grid)
     self.components = components
-    self.farmable = False
+    self.variant = 0
 
   def get_neighbours(self) -> list[Optional['Tile']]:
     return [
@@ -67,31 +63,30 @@ class Tile(GameObject):
 
   def get_neighbour(self, direction: Direction) -> Optional['Tile']:
     relative_x, relative_y = direction.get_relative_pos()
-    grid_x = self.x + relative_x
-    grid_y = self.y + relative_y
+    grid_x = self.position.x + relative_x
+    grid_y = self.position.y + relative_y
     return self.grid.get_tile(grid_x, grid_y)
 
   def get_tile_id(self) -> int:
-    return (self.x * self.grid.world_size) + self.y
+    return (self.position.x * self.grid.world_size) + self.position.y
+
+  def get_position(self) -> 'Position':
+    return self.position
 
   def get_tile_type(self) -> 'TileType':
     return self.components.tile_type
 
-  def render_tile(self, screen: pygame.Surface, x, y):
-    screen_x = (self.offset_x + x * BuildConfig.tile_width // 2 -
-                y * BuildConfig.tile_width // 2 - BuildConfig.tile_width // 2)
-    screen_y = self.offset_y + x * (
-        BuildConfig.tile_height - BuildConfig.tile_height / 2) // 2 + y * (
-            BuildConfig.tile_height -
-            BuildConfig.tile_height / 2) // 2 - BuildConfig.tile_height // 2
-
-    # THis is to only render tiles that are visible to the player (within the window)
-    if (-BuildConfig.tile_width <= screen_x <= BuildConfig.window_width) and (
-        -BuildConfig.tile_height <= screen_y <= BuildConfig.window_height):
-      screen.blit(self.components.images[0], (screen_x, screen_y))
+  def render_tile(self, screen: pygame.Surface):
+    screen.blit(
+        self.components.images[self.variant],
+        (
+            self.position.x * BuildConfig.tile_width,
+            self.position.y * BuildConfig.tile_width,
+        ),
+    )
 
   def __str__(self) -> str:
-    return f'Tile({self.x}, {self.y})'
+    return f'Tile({self.position.x}, {self.position.y})'
 
   def __repr__(self) -> str:
-    return f'Tile({self.x}, {self.y}, {self.components.name})'
+    return f'Tile({self.position.x}, {self.position.y}, {self.components.name})'

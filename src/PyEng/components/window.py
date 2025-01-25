@@ -34,6 +34,8 @@ class Window(SystemComponent):
     self.screen = pygame.display.set_mode(size=(window_width, window_height),
                                           flags=fullscreen,
                                           vsync=vsync)
+    self.display = pygame.Surface((window_width // 2, window_height // 2))
+
     pygame.display.set_caption(caption)
     self.clock = pygame.time.Clock()
 
@@ -56,7 +58,10 @@ class Window(SystemComponent):
     self.clear()
 
   def clear(self):
-    self.screen.fill(self.background_colour)
+    self.display.fill(self.background_colour)
 
   def swap_buffers(self):
+    scaled_display = pygame.transform.scale(self.display,
+                                            self.screen.get_size())
+    self.screen.blit(scaled_display, (0, 0))
     pygame.display.flip()

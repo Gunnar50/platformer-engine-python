@@ -28,15 +28,15 @@ class ComponentManager:  # Singleton
   def add_element(self, component: 'Component') -> None:
     # Prevent duplicates of the system elements
     if isinstance(component, SystemComponent):
-      if component.name not in self.system_components_by_name.keys():
+      if component.class_name not in self.system_components_by_name.keys():
         LOGGER.info(f'Adding component: {component}')
         LOGGER.info(f'Component Type: {type(component)}')
-        self.system_components_by_name[component.name] = component
+        self.system_components_by_name[component.class_name] = component
       else:
         LOGGER.error('Duplicate system component. Exiting...')
         raise exceptions.ComponentDuplicateError
     elif isinstance(component, GameComponent):
-      self.game_components_by_name[component.name].append(component)
+      self.game_components_by_name[component.class_name].append(component)
     else:
       raise exceptions.ComponentNotFoundError
 
@@ -48,11 +48,11 @@ class ComponentManager:  # Singleton
     return self.system_components_by_name.values()
 
   # TODO find a way to return correct type
-  def get(self, name: str) -> Any:
-    if name.lower() not in self.system_components_by_name.keys():
+  def get_by_class(self, class_name: str) -> Any:
+    if class_name.lower() not in self.system_components_by_name.keys():
       raise exceptions.ComponentNotFoundError
 
-    component = self.system_components_by_name[name.lower()]
+    component = self.system_components_by_name[class_name.lower()]
     return component
 
 
@@ -61,7 +61,7 @@ class Component:
 
   def __init__(self, custom_id: Optional[int] = None, add=True):
     self.custom_id = custom_id
-    self.name = self.__class__.__name__.lower()
+    self.class_name = self.__class__.__name__.lower()
     if add:
       self.components_manager.add_element(self)
 
