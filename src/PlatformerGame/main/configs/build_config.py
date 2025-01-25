@@ -12,5 +12,5 @@ class BuildConfig(GameConfig):
   # World settings
   map_width = 10
   map_height = 10
-  tile_width = 96
-  tile_height = 96
+  tile_width = 16
+  tile_height = 16
