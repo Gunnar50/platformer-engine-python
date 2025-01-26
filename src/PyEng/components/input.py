@@ -15,7 +15,7 @@ class InputState:
   def __init__(self, label: str, type: str, input_id: int):
     self.label = label
     self.type = type
-    self.input = input_id
+    self.input_id = input_id
 
     self.pressed = False
     self.just_pressed = False
@@ -73,6 +73,11 @@ class Input(SystemComponent):
           sys.exit()
         elif event.key == pygame.K_SPACE:
           LOGGER.info(self.input)
+
+        for state in self.input.values():
+          if state.type == 'button':
+            if event.key == state.input_id:
+              state.press()
 
 
 class Keyboard:
