@@ -18,10 +18,8 @@ class Position(GameComponent):
 
 class TileType(enum.Enum):
   GRASS = 'grass'
-  SOIL = 'soil'
-  PATH = 'path'
-  SELECTION = 'selection'
-  STONE_PATH = 'stone_path'
+  DIRT = 'dirt'
+  BUSH = 'bush'
 
 
 @dataclasses.dataclass
