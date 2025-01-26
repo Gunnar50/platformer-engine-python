@@ -7,6 +7,7 @@ import pygame
 
 from src.PyEng.components.components import SystemComponent
 from src.shared import api, io
+from src.shared.debug import LOGGER
 
 
 class InputState:
@@ -58,6 +59,9 @@ class Input(SystemComponent):
     return self.input[key].just_released if key in self.input else False
 
   def update(self):
+    for state in self.input.values():
+      state.update()
+
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         pygame.quit()
@@ -67,6 +71,8 @@ class Input(SystemComponent):
         if event.key == pygame.K_ESCAPE:
           pygame.quit()
           sys.exit()
+        elif event.key == pygame.K_SPACE:
+          LOGGER.info(self.input)
 
 
 class Keyboard:
