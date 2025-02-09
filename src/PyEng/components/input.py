@@ -46,8 +46,8 @@ class Input(SystemComponent):
         for mapping in self.config
     }
 
-    self.keyboard = Keyboard()
-    self.mouse = Mouse()
+    self.keyboard = Keyboard(self.input)
+    self.mouse = Mouse(self.input)
 
   def pressed(self, key: api.KeyMapping):
     return self.input[key].just_pressed if key in self.input else False
@@ -67,6 +67,8 @@ class Input(SystemComponent):
         pygame.quit()
         sys.exit()
 
+      self.keyboard.update(event)
+
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE:
           pygame.quit()
@@ -81,8 +83,37 @@ class Input(SystemComponent):
 
 
 class Keyboard:
-  """Keyboard inputs for main keys"""
+
+  def __init__(self, input_config: dict[api.KeyMapping, InputState]) -> None:
+    self.input = input_config
+
+  def update(self, event: pygame.event.Event):
+    if event.type == pygame.KEYDOWN:
+      if event.key == pygame.K_ESCAPE:
+        pygame.quit()
+        sys.exit()
+      elif event.key == pygame.K_SPACE:
+        LOGGER.info(self.input)
+
+      for state in self.input.values():
+        if state.type == 'button' and event.key == state.input_id:
+          state.press()
+
+    elif event.type == pygame.KEYUP:
+      for state in self.input.values():
+        if state.type == 'button' and event.key == state.input_id:
+          state.unpress()
 
 
 class Mouse:
-  """Mouse inputs for main keys"""
+
+  def __init__(self, input_config: dict[api.KeyMapping, InputState]) -> None:
+    self.input = input_config
+    self.position = pygame.Vector2(0, 0)
+    self.ui_position = pygame.Vector2(0, 0)
+    self.movement = pygame.Vector2(0, 0)
+
+  def update(self):
+    mx, my = pygame.mouse.get_pos()
+    self.position = pygame.Vector2(mx, my)
+    self.ui_x, self.ui_y = self.position.x // 2, self.position.y // 2
