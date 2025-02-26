@@ -31,6 +31,13 @@ class GameApp:
       if self.game_manager.components_manager.get_by_class('Input').pressed(
           api.KeyMapping.UP):
         print('UP')
+      if self.game_manager.components_manager.get_by_class('Input').pressed(
+          api.KeyMapping.MOUSE_LEFT):
+        print('MOUSE_LEFT')
+      if self.game_manager.components_manager.get_by_class('Input').holding(
+          api.KeyMapping.MOUSE_LEFT):
+        print('HOLDING')
+
     # self.game_manager.clean_up()
 
 

@@ -4,6 +4,7 @@ import time
 from typing import Any
 
 import pygame
+from yaml import MappingNode
 
 from src.PyEng.components.components import SystemComponent
 from src.shared import api, io
@@ -12,7 +13,8 @@ from src.shared.debug import LOGGER
 
 class InputState:
 
-  def __init__(self, label: str, type: str, input_id: int):
+  def __init__(self, label: str, type: api.InputType, input_id: int):
+    print(type)
     self.label = label
     self.type = type
     self.input_id = input_id
@@ -40,10 +42,11 @@ class Input(SystemComponent):
 
   def __init__(self, key_mappings_path: pathlib.Path):
     SystemComponent.__init__(self)
-    self.config: list[dict[str, Any]] = io.load_json(key_mappings_path)
+    self.config = io.load_model_from_json(key_mappings_path, api.InputConfig)
     self.input = {
-        api.KeyMapping(mapping['label']): InputState(**mapping)
-        for mapping in self.config
+        api.KeyMapping(mapping.label):
+            InputState(mapping.label, mapping.type, mapping.input_id)
+        for mapping in self.config.config
     }
 
     self.keyboard = Keyboard(self.input)
@@ -68,18 +71,7 @@ class Input(SystemComponent):
         sys.exit()
 
       self.keyboard.update(event)
-
-      if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_ESCAPE:
-          pygame.quit()
-          sys.exit()
-        elif event.key == pygame.K_SPACE:
-          LOGGER.info(self.input)
-
-        for state in self.input.values():
-          if state.type == 'button':
-            if event.key == state.input_id:
-              state.press()
+      self.mouse.update(event)
 
 
 class Keyboard:
@@ -96,12 +88,12 @@ class Keyboard:
         LOGGER.info(self.input)
 
       for state in self.input.values():
-        if state.type == 'button' and event.key == state.input_id:
+        if state.type == api.InputType.BUTTON and event.key == state.input_id:
           state.press()
 
     elif event.type == pygame.KEYUP:
       for state in self.input.values():
-        if state.type == 'button' and event.key == state.input_id:
+        if state.type == api.InputType.BUTTON and event.key == state.input_id:
           state.unpress()
 
 
@@ -113,7 +105,17 @@ class Mouse:
     self.ui_position = pygame.Vector2(0, 0)
     self.movement = pygame.Vector2(0, 0)
 
-  def update(self):
+  def update(self, event: pygame.event.Event):
     mx, my = pygame.mouse.get_pos()
     self.position = pygame.Vector2(mx, my)
     self.ui_x, self.ui_y = self.position.x // 2, self.position.y // 2
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+      for state in self.input.values():
+        if state.type == api.InputType.MOUSE and event.button == state.input_id:
+          state.press()
+
+    elif event.type == pygame.MOUSEBUTTONUP:
+      for state in self.input.values():
+        if state.type == api.InputType.MOUSE and event.button == state.input_id:
+          state.unpress()

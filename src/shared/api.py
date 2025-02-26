@@ -25,3 +25,18 @@ class KeyMapping(enum.Enum):
   MOUSE_LEFT = 'mouse_left'
   MOUSE_MIDDLE = 'mouse_middle'
   MOUSE_RIGHT = 'mouse_right'
+
+
+class InputType(enum.Enum):
+  BUTTON = 'button'
+  MOUSE = 'mouse'
+
+
+class InputMappings(pydantic.BaseModel):
+  label: str
+  type: InputType
+  input_id: int
+
+
+class InputConfig(pydantic.BaseModel):
+  config: list[InputMappings]

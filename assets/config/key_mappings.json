@@ -1,42 +1,44 @@
-[
-  {
-    "label": "quit",
-    "type": "button",
-    "input_id": 27
-  },
-  {
-    "label": "right",
-    "type": "button",
-    "input_id": 1073741903
-  },
-  {
-    "label": "left",
-    "type": "button",
-    "input_id": 1073741904
-  },
-  {
-    "label": "up",
-    "type": "button",
-    "input_id": 1073741906
-  },
-  {
-    "label": "down",
-    "type": "button",
-    "input_id": 1073741905
-  },
-  {
-    "label": "mouse_left",
-    "type": "mouse",
-    "input_id": 1
-  },
-  {
-    "label": "mouse_middle",
-    "type": "mouse",
-    "input_id": 2
-  },
-  {
-    "label": "mouse_right",
-    "type": "mouse",
-    "input_id": 3
-  }
-]
+{
+  "config": [
+    {
+      "label": "quit",
+      "type": "button",
+      "input_id": 27
+    },
+    {
+      "label": "right",
+      "type": "button",
+      "input_id": 1073741903
+    },
+    {
+      "label": "left",
+      "type": "button",
+      "input_id": 1073741904
+    },
+    {
+      "label": "up",
+      "type": "button",
+      "input_id": 1073741906
+    },
+    {
+      "label": "down",
+      "type": "button",
+      "input_id": 1073741905
+    },
+    {
+      "label": "mouse_left",
+      "type": "mouse",
+      "input_id": 1
+    },
+    {
+      "label": "mouse_middle",
+      "type": "mouse",
+      "input_id": 2
+    },
+    {
+      "label": "mouse_right",
+      "type": "mouse",
+      "input_id": 3
+    }
+  ]
+}

@@ -6,12 +6,14 @@ import pathlib
 from typing import Any
 from typing import Any, Type, TypeVar, cast
 
+import pydantic
 import pygame
 
 from src.shared import exceptions
 from src.shared.debug import LOGGER
 
 BlueprintType = TypeVar('BlueprintType')
+ModelType = TypeVar('ModelType', bound=pydantic.BaseModel)
 
 
 def load_json(file_path: pathlib.Path) -> Any:
@@ -21,6 +23,12 @@ def load_json(file_path: pathlib.Path) -> Any:
   else:
     LOGGER.error(f'File path {file_path} not found. Exiting...')
     raise exceptions.FilePathNotFound
+
+
+def load_model_from_json(file_path: pathlib.Path,
+                         model: Type[ModelType]) -> ModelType:
+  data = load_json(file_path)
+  return model.model_validate(data)
 
 
 def get_data_model(
