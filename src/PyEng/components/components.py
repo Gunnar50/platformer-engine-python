@@ -3,6 +3,7 @@ from typing import Any, Optional
 
 from src.shared import exceptions
 from src.shared.debug import LOGGER
+
 """
 ID ranges
 System components: 1000 - 1999

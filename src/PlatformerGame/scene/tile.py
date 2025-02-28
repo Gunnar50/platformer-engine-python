@@ -6,8 +6,8 @@ import pygame
 from src.PlatformerGame.main.configs.build_config import BuildConfig
 
 if TYPE_CHECKING:
-  from src.PlatformerGame.repository.game_components import Position
-  from src.PlatformerGame.repository.game_components import (TileBlueprint,
+  from src.PlatformerGame.repository.game_components import (Position,
+                                                             TileBlueprint,
                                                              TileType)
   from src.PlatformerGame.scene.world_grid import WorldGrid
 
