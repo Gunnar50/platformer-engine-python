@@ -12,7 +12,6 @@ from src.shared.debug import LOGGER
 class InputState:
 
   def __init__(self, label: str, type: api.InputType, input_id: int):
-    print(type)
     self.label = label
     self.type = type
     self.input_id = input_id

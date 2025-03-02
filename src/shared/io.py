@@ -20,8 +20,8 @@ def load_json(file_path: pathlib.Path) -> Any:
     with open(file_path, 'r') as f:
       return json.load(f)
   else:
-    LOGGER.error(f'File path {file_path} not found. Exiting...')
-    raise exceptions.FilePathNotFound
+    raise exceptions.FilePathNotFound(
+        f'The following file path was not found: {file_path}')
 
 
 def load_model_from_json(file_path: pathlib.Path,
@@ -35,7 +35,7 @@ def get_data_model(
     file_path: pathlib.Path,
 ) -> BlueprintType:
   if not dataclasses.is_dataclass(ParametersClass):
-    raise TypeError(f"{ParametersClass} is not a dataclass.")
+    raise exceptions.NotDataclass(f'"{ParametersClass}" is not a dataclass.')
 
   json_data = load_json(file_path)
   values = {}
@@ -64,9 +64,12 @@ def get_data_model(
 
   try:
     result = ParametersClass(**values)
-  except TypeError as e:
-    LOGGER.error(f'Error initializing dataclass: {e}')
-    raise ValueError(f'Error initializing dataclass: {e}')
+  except TypeError:
+    context = {
+        'ParametersClass': ParametersClass,
+        'values': values,
+    }
+    raise exceptions.FailedToGetDataModel(f'Error initialising model', context)
 
   if json_data:
     LOGGER.warning(f'Remaining data that could not be loaded: {json_data}')

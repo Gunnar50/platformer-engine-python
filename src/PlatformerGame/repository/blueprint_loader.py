@@ -23,8 +23,8 @@ class BlueprintLoader:
   def load_folder(self, folder: pathlib.Path,
                   repository: HashRegistry[Any]) -> None:
     if not os.path.exists(folder):
-      ErrorManager.log_error(
-          exceptions.FilePathNotFound(f'Path {folder} not found.'))
+      raise exceptions.FilePathNotFound(
+          f'The following file path was not found: {folder}')
 
     for item in folder.iterdir():
       if self.is_folder(item):
@@ -48,9 +48,7 @@ class BlueprintLoader:
       if file.name.startswith(self.file_prefix):
         return file
 
-    ErrorManager.log_error(
-        exceptions.InfoFileNotFound(f'No info file found for {folder.name}'))
-    raise
+    raise exceptions.InfoFileNotFound(f'No info file found for {folder.name}')
 
 
 @dataclasses.dataclass

@@ -1,8 +1,7 @@
 from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PlatformerGame.main.game_manager import GameManager
 from src.PyEng.main.engine import Engine
-from src.PyEng.utils.error_manager import ErrorManager
-from src.shared import api, exceptions
+from src.shared import api
 
 
 class EngineTester:
@@ -27,8 +26,8 @@ class GameApp:
   def run(self) -> None:
     while True:
       self.game_manager.update()
-      # Update engine
       self.engine.update()
+
       if self.game_manager.components_manager.get_by_class('Input').pressed(
           api.KeyMapping.UP):
         print('UP')

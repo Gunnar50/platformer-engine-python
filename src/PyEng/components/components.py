@@ -14,7 +14,7 @@ class ComponentManager:  # Singleton
   
   This is a singleton component that handles all the system and game components
   """
-  __instance = None
+  __instance: 'ComponentManager | None' = None
 
   def __new__(cls, *args, **kwargs):
     if cls.__instance is None:
@@ -30,16 +30,16 @@ class ComponentManager:  # Singleton
     if isinstance(component, SystemComponent):
       if component.class_name not in self.system_components_by_name.keys():
         LOGGER.info(f'Adding component: {component}')
-        LOGGER.info(f'Component Type: {type(component)}')
         self.system_components_by_name[component.class_name] = component
       else:
-        LOGGER.error('Duplicate system component. Exiting...')
-        raise exceptions.ComponentDuplicateError
+        raise exceptions.ComponentDuplicateError(
+            f'Duplicate system component: {component.class_name}')
+
     elif isinstance(component, GameComponent):
       self.game_components_by_name[component.class_name].append(component)
     else:
-      LOGGER.error('Component not found. Exiting...')
-      raise exceptions.ComponentNotFoundError
+      raise exceptions.ComponentNotFoundError(
+          f'Trying to add non existent component: {component}')
 
   def update(self) -> None:
     for component in self.system_components_by_name.values():
@@ -51,7 +51,8 @@ class ComponentManager:  # Singleton
   # TODO find a way to return correct type
   def get_by_class(self, class_name: str) -> Any:
     if class_name.lower() not in self.system_components_by_name.keys():
-      raise exceptions.ComponentNotFoundError
+      raise exceptions.ComponentNotFoundError(
+          f'Class name not found: {class_name}')
 
     component = self.system_components_by_name[class_name.lower()]
     return component
@@ -77,7 +78,7 @@ class SystemComponent(Component):  # Singleton
   
   Render, Camera, Inputs, Assets, etc.
   """
-  __instance = None
+  __instance: Any | None = None
 
   def __new__(cls, *args, **kwargs):
     if cls.__instance is None:
