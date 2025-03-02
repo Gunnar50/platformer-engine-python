@@ -62,6 +62,7 @@ class Engine:
         vsync=configs.vsync,
         background_colour=configs.background_colour,
     )
+
     # Set up keyboard and mouse inputs
     self.input = Input(EngineFiles.KEY_MAPPINGS)
     self.state_manager = StateManager(configs.default_state,

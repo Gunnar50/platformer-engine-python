@@ -3,7 +3,6 @@ from typing import Any, Optional
 
 from src.shared import exceptions
 from src.shared.debug import LOGGER
-
 """
 ID ranges
 System components: 1000 - 1999
@@ -39,6 +38,7 @@ class ComponentManager:  # Singleton
     elif isinstance(component, GameComponent):
       self.game_components_by_name[component.class_name].append(component)
     else:
+      LOGGER.error('Component not found. Exiting...')
       raise exceptions.ComponentNotFoundError
 
   def update(self) -> None:

@@ -28,3 +28,7 @@ class RegistryNotFoundException(Exception):
 
 class InfoFileNotFound(Exception):
   '''Raised if a entity info file does not exist'''
+
+
+class FailedToLoadBlueprint(Exception):
+  '''Raise if a blueprint fails to load'''

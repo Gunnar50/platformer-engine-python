@@ -1,7 +1,8 @@
 from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PlatformerGame.main.game_manager import GameManager
 from src.PyEng.main.engine import Engine
-from src.shared import api
+from src.PyEng.utils.error_manager import ErrorManager
+from src.shared import api, exceptions
 
 
 class EngineTester:
@@ -34,9 +35,9 @@ class GameApp:
       if self.game_manager.components_manager.get_by_class('Input').pressed(
           api.KeyMapping.MOUSE_LEFT):
         print('MOUSE_LEFT')
-      if self.game_manager.components_manager.get_by_class('Input').holding(
-          api.KeyMapping.MOUSE_LEFT):
-        print('HOLDING')
+        print(
+            self.game_manager.components_manager.get_by_class(
+                'Input').mouse.position)
 
     # self.game_manager.clean_up()
 

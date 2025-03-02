@@ -50,13 +50,13 @@ class Input(SystemComponent):
     self.keyboard = Keyboard(self.input)
     self.mouse = Mouse(self.input)
 
-  def pressed(self, key: api.KeyMapping):
+  def pressed(self, key: api.KeyMapping) -> bool:
     return self.input[key].just_pressed if key in self.input else False
 
-  def holding(self, key):
+  def holding(self, key) -> bool:
     return self.input[key].pressed if key in self.input else False
 
-  def released(self, key):
+  def released(self, key) -> bool:
     return self.input[key].just_released if key in self.input else False
 
   def update(self):
@@ -74,7 +74,7 @@ class Input(SystemComponent):
 
 class Keyboard:
 
-  def __init__(self, input_config: dict[api.KeyMapping, InputState]) -> None:
+  def __init__(self, input_config: dict[api.KeyMapping, InputState]):
     self.input = input_config
 
   def update(self, event: pygame.event.Event):
@@ -97,7 +97,7 @@ class Keyboard:
 
 class Mouse:
 
-  def __init__(self, input_config: dict[api.KeyMapping, InputState]) -> None:
+  def __init__(self, input_config: dict[api.KeyMapping, InputState]):
     self.input = input_config
     self.position = pygame.Vector2(0, 0)
     self.ui_position = pygame.Vector2(0, 0)
