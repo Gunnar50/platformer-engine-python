@@ -6,13 +6,13 @@ import logging
 import datetime
 import platform
 import socket
-from functools import wraps
 import re
 from types import TracebackType
-from typing import Callable, Optional, Type
+from typing import Optional, Type
 
 from src.PyEng.components.components import SystemComponent
 from src.PyEng.main.engine_files import EngineFiles
+from src.shared import exceptions
 
 
 class ErrorManager(SystemComponent):
@@ -87,10 +87,8 @@ class ErrorManager(SystemComponent):
         exc_value: The exception instance
         exc_traceback: The traceback object
     """
-
     # Don't log keyboard interrupts
-    if (issubclass(exc_type, KeyboardInterrupt) or
-        id(exc_value) in ErrorManager._logged_exceptions):
+    if issubclass(exc_type, KeyboardInterrupt):
       sys.__excepthook__(exc_type, exc_value, exc_traceback)
       return
 
@@ -100,8 +98,13 @@ class ErrorManager(SystemComponent):
     # Get the appropriate logger
     logger, log_path = ErrorManager._create_logger(error_name)
 
+    if issubclass(exc_type, exceptions.ApplicationException):
+      error_header = f'APPLICATION EXCEPTION: {error_name}\n'
+    else:
+      error_header = f'UNCAUGHT EXCEPTION: {error_name}\n'
+
     error_msg = ErrorManager.format_message(
-        f'UNCAUGHT EXCEPTION: {error_name}\n',
+        error_header,
         exc_value,
     )
 
@@ -162,7 +165,6 @@ class ErrorManager(SystemComponent):
   def format_message(
       error_msg: str,
       exception: BaseException,
-      context: Optional[dict] = None,
   ) -> str:
     message = str(exception)
     if not message:
@@ -178,10 +180,14 @@ class ErrorManager(SystemComponent):
     error_msg += '\n' + '=' * 80 + '\n'
     error_msg += f'ERROR MESSAGE: {message}\n'
 
-    if context:
-      error_msg += 'CONTEXT:\n'
-      error_msg += '\n'.join(f'{k}: {v}' for k, v in context.items())
-      error_msg += '\n'
+    if hasattr(exception, 'context'):
+      context: dict = getattr(exception, 'context')
+      if context is not None:
+        error_msg += 'CONTEXT:\n'
+        error_msg += '\n'.join(f'{k}: {v}' for k, v in context.items())
+        error_msg += '\n'
+
+    error_msg += '=' * 80 + '\n'
 
     if exception.__traceback__:
       traceback_lines = traceback.format_exception(type(exception), exception,
@@ -197,53 +203,3 @@ class ErrorManager(SystemComponent):
 
     error_msg += '=' * 80 + '\n'
     return error_msg
-
-  @staticmethod
-  def error(func: Optional[Callable] = None,
-            error_name: Optional[str] = None) -> Callable:
-    """
-    Decorator to catch and log exceptions in functions.
-    Can be used with or without arguments.
-
-    @error_manager.error_decorator
-    def my_function():
-        ...
-
-    OR
-
-    @error_manager.error_decorator(error_name="CustomName")
-    def my_function():
-        ...
-    """
-
-    def decorator(func):
-
-      @wraps(func)
-      def wrapper(*args, **kwargs):
-        try:
-          return func(*args, **kwargs)
-        except Exception as e:
-          # Create context with function arguments
-          context = {
-              'function': func.__name__,
-              'module': func.__module__,
-              'args': str(args),
-              'kwargs': str(kwargs)
-          }
-
-          # Use custom error name or function name
-          err_name = error_name or f'{func.__name__}Error'
-
-          # Log the error
-          ErrorManager.log_error(f'Error in function {func.__name__}',
-                                 exception=e,
-                                 error_name=err_name,
-                                 context=context)
-          raise
-
-      return wrapper
-
-    # Handle both @decorator and @decorator(error_name="...")
-    if func is None:
-      return decorator
-    return decorator(func)
