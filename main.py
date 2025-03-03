@@ -28,15 +28,11 @@ class GameApp:
       self.game_manager.update()
       self.engine.update()
 
-      if self.game_manager.components_manager.get_by_class('Input').pressed(
-          api.KeyMapping.UP):
-        print('UP')
-      if self.game_manager.components_manager.get_by_class('Input').pressed(
-          api.KeyMapping.MOUSE_LEFT):
+      if Engine.get_instance().input.pressed(api.KeyMapping.DOWN):
+        print('DOWN')
+      if self.engine.get_instance().input.pressed(api.KeyMapping.MOUSE_LEFT):
         print('MOUSE_LEFT')
-        print(
-            self.game_manager.components_manager.get_by_class(
-                'Input').mouse.position)
+        print(Engine.get_instance().input.mouse.position)
 
     # self.game_manager.clean_up()
 
