@@ -20,8 +20,8 @@ class Engine:
     self.components_manager = ComponentManager()
 
     self.check_assets_folder()
-    self.create_global_components(configs)
     self.create_engine_components(configs)
+    self.create_global_components(configs)
 
     self.close_flag = False
 
@@ -48,7 +48,7 @@ class Engine:
   def create_global_components(self, configs: type[EngineConfigs]):
     # Create global systems
     ErrorManager(EngineFiles.ERROR_FOLDER)
-    Debugger(configs.debugger)
+    Debugger(configs.debug)
     # BackgroundLoader()
 
   def create_engine_components(self, configs: type[EngineConfigs]):

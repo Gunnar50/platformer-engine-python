@@ -5,6 +5,7 @@ from src.shared import exceptions
 from src.shared.debug import LOGGER
 
 if TYPE_CHECKING:
+  from src.PyEng.components.window import Window
   from src.PlatformerGame.main.game_manager import GameManager
 
 
@@ -58,6 +59,14 @@ class ComponentManager:  # Singleton
 
   def get_game_manager(self) -> 'GameManager':
     name = 'GameManager'
+    if name.lower() not in self.system_components_by_name.keys():
+      raise exceptions.ComponentNotFoundError(f'Class name not found: {name}')
+
+    component = self.system_components_by_name[name.lower()]
+    return component
+
+  def get_window(self) -> 'Window':
+    name = 'Window'
     if name.lower() not in self.system_components_by_name.keys():
       raise exceptions.ComponentNotFoundError(f'Class name not found: {name}')
 

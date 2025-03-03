@@ -19,7 +19,7 @@ class EngineConfigs:
   initial_state = State()
   default_state = State()
 
-  debugger = None
+  debug = True
 
   @staticmethod
   def get_default_configs():
