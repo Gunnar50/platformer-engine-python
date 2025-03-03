@@ -1,13 +1,11 @@
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 import pygame
 
 from src.PlatformerGame.scene.tile import Tile
 from src.PyEng.components.components import GameComponent
+from src.PyEng.main.engine import Engine
 from src.shared import serialisers
-
-if TYPE_CHECKING:
-  from src.PlatformerGame.main.game_manager import GameManager
 
 
 class Scene(GameComponent):
@@ -15,7 +13,7 @@ class Scene(GameComponent):
 
   def __init__(self) -> None:
     GameComponent.__init__(self)
-    self.window = self.components_manager.get_by_class('Window')
+    self.window = Engine.get_instance().window
     self.world_grid = WorldGrid(self, Scene.WORLD_SIZE)
 
   def update(self):
@@ -33,9 +31,8 @@ class WorldGrid(serialisers.Exportable, GameComponent):
     self.tilemap: dict[tuple[int, int], Tile] = {}
     self.scene = scene
     self.world_size = world_size
-    game_manage_component: GameManager = self.components_manager.get_by_class(
-        'GameManager')
-    self.tile_blueprints = game_manage_component.get_blueprint_database().tiles
+    game_manager_component = self.components_manager.get_game_manager()
+    self.tile_blueprints = game_manager_component.get_blueprint_database().tiles
     self.setup_grid()
 
   def setup_grid(self):

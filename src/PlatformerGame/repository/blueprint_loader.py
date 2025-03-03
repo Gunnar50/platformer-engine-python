@@ -1,16 +1,14 @@
 import dataclasses
 import os
 import pathlib
-from typing import Any, Optional, Type
+from typing import Any, Type
 
 from src.PlatformerGame.repository.game_components import (Blueprint,
                                                            EntityBlueprint,
                                                            ItemBlueprint,
                                                            TileBlueprint)
 from src.PlatformerGame.repository.game_files import GameFiles
-from src.PyEng.utils.error_manager import ErrorManager
 from src.shared import exceptions, io
-from src.shared.debug import LOGGER
 from src.shared.hash_registry import HashRegistry
 
 

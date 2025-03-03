@@ -1,12 +1,11 @@
 from collections import defaultdict
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 from src.shared import exceptions
 from src.shared.debug import LOGGER
-"""
-ID ranges
-System components: 1000 - 1999
-"""
+
+if TYPE_CHECKING:
+  from src.PlatformerGame.main.game_manager import GameManager
 
 
 class ComponentManager:  # Singleton
@@ -57,6 +56,14 @@ class ComponentManager:  # Singleton
     component = self.system_components_by_name[class_name.lower()]
     return component
 
+  def get_game_manager(self) -> 'GameManager':
+    name = 'GameManager'
+    if name.lower() not in self.system_components_by_name.keys():
+      raise exceptions.ComponentNotFoundError(f'Class name not found: {name}')
+
+    component = self.system_components_by_name[name.lower()]
+    return component
+
 
 class Component:
   components_manager = ComponentManager()
@@ -78,7 +85,7 @@ class SystemComponent(Component):  # Singleton
   
   Render, Camera, Inputs, Assets, etc.
   """
-  __instance: Any | None = None
+  __instance = None
 
   def __new__(cls, *args, **kwargs):
     if cls.__instance is None:
