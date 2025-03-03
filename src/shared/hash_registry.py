@@ -24,11 +24,13 @@ class HashRegistry(Generic[RegistrableType], Iterable):
 
   def register(self, item: RegistrableType) -> None:
     if item.get_name() in self.map:
-      context = {
-          'registry': self.registry_name,
-          'item': item.get_name(),
-      }
-      raise exceptions.IllegalRegistryOverwrite(f'Registry Overwrite', context)
+      raise exceptions.IllegalRegistryOverwrite(
+          f'Registry Overwrite',
+          {
+              'registry': self.registry_name,
+              'item': item.get_name(),
+          },
+      )
     else:
       self.map[item.get_name()] = item
 
