@@ -39,4 +39,5 @@ class GameManager(SystemComponent):
       # in the renderer
       pass
 
+    # Update the current session which renders the world
     self.current_session.update()

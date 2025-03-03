@@ -1,7 +1,8 @@
 from src.PlatformerGame.scene.world_grid import Scene
+from src.PyEng.components.components import GameComponent
 
 
-class GameSession:
+class GameSession(GameComponent):
 
   def __init__(self) -> None:
     self.scene = Scene()

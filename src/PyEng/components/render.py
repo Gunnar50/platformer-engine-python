@@ -6,6 +6,7 @@ from src.shared.types import Coordinate
 
 
 class Render(SystemComponent):
+  """CURRENTLY NOT IN USE"""
   """Render all the elements in the Window"""
 
   def __init__(self) -> None:
