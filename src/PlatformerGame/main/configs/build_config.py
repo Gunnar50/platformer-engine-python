@@ -5,7 +5,7 @@ class BuildConfig(GameConfig):
   """Build Configs"""
   window_width = 1280
   window_height = 720
-  title = f'PyFarm - Version: {GameConfig.version}'
+  title = f'Platform Engine - Version: {GameConfig.version}'
   fullscreen = 0
   cheats = True
 
