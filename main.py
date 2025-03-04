@@ -22,17 +22,18 @@ class GameApp:
   def __init__(self) -> None:
     self.engine = Engine.create(BuildConfig)
     self.game_manager = GameManager(self.engine)
+    self.input = self.game_manager.components_manager.get_input()
 
   def run(self) -> None:
     while True:
       self.game_manager.update()
       self.engine.update()
 
-      if Engine.get_instance().input.pressed(api.KeyMapping.DOWN):
+      if self.input.pressed(api.KeyMapping.DOWN):
         print('DOWN')
-      if self.engine.get_instance().input.pressed(api.KeyMapping.MOUSE_LEFT):
+      if self.input.pressed(api.KeyMapping.MOUSE_LEFT):
         print('MOUSE_LEFT')
-        print(Engine.get_instance().input.mouse.position)
+        print(self.input.mouse.position)
 
     # self.game_manager.clean_up()
 
