@@ -21,7 +21,7 @@ class Debugger(SystemComponent):
       text_rect = text.get_rect()
       text_rect.x = 0
       text_rect.y = 20 * i
-      self.window.ui_display.blit(text, text_rect)
+      self.window.debug_display.blit(text, text_rect)
 
   def register_info(self, key: str, info: Any):
     self.debug[key] = info
