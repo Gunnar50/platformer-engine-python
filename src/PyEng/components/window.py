@@ -29,14 +29,17 @@ class Window(SystemComponent):
     self.background_colour = background_colour
     self.window_width = window_width
     self.window_height = window_height
+    self.scale_factor = 2
     self.start_time = time.time()
 
     self.screen = pygame.display.set_mode(size=(window_width, window_height),
                                           flags=fullscreen,
                                           vsync=vsync)
-    self.display = pygame.Surface((window_width // 2, window_height // 2))
-    self.debug_display = pygame.Surface((window_width, window_height),
-                                        pygame.SRCALPHA)
+    self.display = pygame.Surface(
+        (window_width // self.scale_factor,
+         window_height // self.scale_factor)).convert_alpha()
+    self.debug_display = pygame.Surface(
+        (window_width, window_height)).convert_alpha()
 
     pygame.display.set_caption(caption)
     self.clock = pygame.time.Clock()
