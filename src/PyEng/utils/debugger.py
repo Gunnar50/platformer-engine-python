@@ -13,6 +13,7 @@ class Debugger(SystemComponent):
     self.font = pygame.font.SysFont('Consolas', 20)
     self.window = self.components_manager.get_window()
     self.register_info('FPS', self.window.fps)
+    self.register_info('DT', self.window.get_dt())
 
   def render_info(self):
     for i, key in enumerate(self.debug):

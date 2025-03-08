@@ -25,3 +25,6 @@ run:
 
 test:
 	pytest --disable-warnings $(ARGS) -vv -s
+
+editor:
+	python level_editor.py

@@ -28,7 +28,7 @@ class WorldGrid(serialisers.Exportable, GameComponent):
   def __init__(self, scene: Scene, world_size: int) -> None:
     serialisers.Exportable.__init__(self)
     GameComponent.__init__(self)
-    self.tilemap: dict[tuple[int, int], Tile] = {}
+    self.tile_map: dict[tuple[int, int], Tile] = {}
     self.scene = scene
     self.world_size = world_size
     game_manager_component = self.components_manager.get_game_manager()
@@ -40,13 +40,13 @@ class WorldGrid(serialisers.Exportable, GameComponent):
       # Create example tiles
       tile = self.tile_blueprints.get('grass').create_instance(3 + i, 10, self)
       tile2 = self.tile_blueprints.get('dirt').create_instance(10, 5 + i, self)
-      self.tilemap.update({
+      self.tile_map.update({
           (tile.position.x, tile.position.y): tile,
           (tile2.position.x, tile2.position.y): tile2,
       })
 
   def add_tile(self, tile: Tile) -> None:
-    self.tilemap.update({(tile.position.x, tile.position.y): tile})
+    self.tile_map.update({(tile.position.x, tile.position.y): tile})
 
   def get_tile_from_id(self, id: int):
     x, y = id // self.world_size, id % self.world_size
@@ -59,10 +59,10 @@ class WorldGrid(serialisers.Exportable, GameComponent):
       return None
 
   def get_tile(self, x: int, y: int) -> Optional[Tile]:
-    return self.tilemap.get((x, y))
+    return self.tile_map.get((x, y))
 
   def render(self, screen: pygame.Surface):
-    for tile in self.tilemap.values():
+    for tile in self.tile_map.values():
       tile.render_tile(screen)
 
   def get_serialiser(self) -> serialisers.Serialiser:
