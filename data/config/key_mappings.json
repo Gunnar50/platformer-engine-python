@@ -1,43 +1,51 @@
 {
   "config": [
     {
-      "label": "escape",
+      "label": "quit",
       "type": "button",
+      "input_name": "escape",
       "input_id": 27
     },
     {
-      "label": "right_arrow",
+      "label": "right",
       "type": "button",
+      "input_name": "right_arrow",
       "input_id": 1073741903
     },
     {
-      "label": "left_arrow",
+      "label": "left",
       "type": "button",
+      "input_name": "left_arrow",
       "input_id": 1073741904
     },
     {
-      "label": "up_arrow",
+      "label": "up",
       "type": "button",
+      "input_name": "up_arrow",
       "input_id": 1073741906
     },
     {
-      "label": "down_arrow",
+      "label": "down",
       "type": "button",
+      "input_name": "down_arrow",
       "input_id": 1073741905
     },
     {
       "label": "mouse_left",
       "type": "mouse",
+      "input_name": "mouse_left",
       "input_id": 1
     },
     {
       "label": "mouse_middle",
       "type": "mouse",
+      "input_name": "mouse_middle",
       "input_id": 2
     },
     {
       "label": "mouse_right",
       "type": "mouse",
+      "input_name": "mouse_right",
       "input_id": 3
     }
   ]

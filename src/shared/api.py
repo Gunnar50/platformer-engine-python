@@ -24,6 +24,7 @@ class InputType(enum.Enum):
 class InputMappings(pydantic.BaseModel):
   label: str
   type: InputType
+  input_name: str
   input_id: int
 
 
@@ -31,12 +32,13 @@ class InputConfig(pydantic.BaseModel):
   config: list[InputMappings]
 
 
+# Auto generated from config files
 class KeyMapping(enum.Enum):
-  ESCAPE = 'escape'
-  RIGHT_ARROW = 'right_arrow'
-  LEFT_ARROW = 'left_arrow'
-  UP_ARROW = 'up_arrow'
-  DOWN_ARROW = 'down_arrow'
+  QUIT = 'quit'
+  RIGHT = 'right'
+  LEFT = 'left'
+  UP = 'up'
+  DOWN = 'down'
   MOUSE_LEFT = 'mouse_left'
   MOUSE_MIDDLE = 'mouse_middle'
   MOUSE_RIGHT = 'mouse_right'

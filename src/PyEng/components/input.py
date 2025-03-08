@@ -11,9 +11,16 @@ from src.shared.debug import LOGGER
 
 class InputState:
 
-  def __init__(self, label: str, type: api.InputType, input_id: int):
+  def __init__(
+      self,
+      label: str,
+      type: api.InputType,
+      input_name: str,
+      input_id: int,
+  ):
     self.label = label
     self.type = type
+    self.input_name = input_name
     self.input_id = input_id
 
     self.pressed = False
@@ -41,9 +48,9 @@ class Input(SystemComponent):
     SystemComponent.__init__(self)
     self.config = io.load_model_from_json(key_mappings_path, api.InputConfig)
     self.input = {
-        api.KeyMapping(mapping.label):
-            InputState(mapping.label, mapping.type, mapping.input_id)
-        for mapping in self.config.config
+        api.KeyMapping(mapping.label): InputState(
+            mapping.label, mapping.type, mapping.input_name,
+            mapping.input_id) for mapping in self.config.config
     }
 
     self.keyboard = Keyboard(self.input)
