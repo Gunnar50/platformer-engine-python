@@ -2,8 +2,8 @@ import json
 import re
 from typing import Any
 
-json_file_path = 'assets/config/key_mappings.json'
-output_file_path = 'PyEng/shared/api.py'
+json_file_path = 'data/config/key_mappings.json'
+output_file_path = 'src/shared/api.py'
 
 
 def load_json(file_path):
@@ -39,7 +39,7 @@ def main():
   key_mapping = load_json(json_file_path)
 
   # Generate the enum class code as a string
-  enum_class_code = generate_enum_class("KeyMapping", key_mapping)
+  enum_class_code = generate_enum_class("KeyMapping", key_mapping.get('config'))
 
   # Read the current content of the output file
   with open(output_file_path, 'r') as f:
