@@ -1,0 +1,94 @@
+Symbols
+Text: #, Key: 35
+Text: ', Key: 39
+Text: ,, Key: 44
+Text: -, Key: 45
+Text: ., Key: 46
+Text: /, Key: 47
+Text: ;, Key: 59
+Text: =, Key: 61
+Text: [, Key: 91
+Text: ], Key: 93
+
+Numbers
+Text: 0, Key: 48
+Text: 1, Key: 49
+Text: 2, Key: 50
+Text: 3, Key: 51
+Text: 4, Key: 52
+Text: 5, Key: 53
+Text: 6, Key: 54
+Text: 7, Key: 55
+Text: 8, Key: 56
+Text: 9, Key: 57
+
+Letters
+Text: a, Key: 97
+Text: b, Key: 98
+Text: c, Key: 99
+Text: d, Key: 100
+Text: e, Key: 101
+Text: f, Key: 102
+Text: g, Key: 103
+Text: h, Key: 104
+Text: i, Key: 105
+Text: j, Key: 106
+Text: k, Key: 107
+Text: l, Key: 108
+Text: m, Key: 109
+Text: n, Key: 110
+Text: o, Key: 111
+Text: p, Key: 112
+Text: q, Key: 113
+Text: r, Key: 114
+Text: s, Key: 115
+Text: t, Key: 116
+Text: u, Key: 117
+Text: v, Key: 118
+Text: w, Key: 119
+Text: x, Key: 120
+Text: y, Key: 121
+Text: z, Key: 122
+
+Special
+Text: Backspace, Key: 8
+Text: Tab, Key: 9
+Text: Return/Enter (?), Key: 13
+Text: Space, Key: 32
+Text: Left Shift, Key: 1073742049
+Text: Left Control, Key: 1073742048
+Text: Left Alt, Key: 1073742050
+Text: Right Shift, Key: 1073742053
+Text: Right Control, Key: 1073742052
+
+NumPad
+Text: NumPad 0, Key: 1073741922
+Text: NumPad 1, Key: 1073741913
+Text: NumPad 2, Key: 1073741914
+Text: NumPad 3, Key: 1073741915
+Text: NumPad 4, Key: 1073741916
+Text: NumPad 5, Key: 1073741917
+Text: NumPad 6, Key: 1073741918
+Text: NumPad 7, Key: 1073741919
+Text: NumPad 8, Key: 1073741920
+Text: NumPad 9, Key: 1073741921
+
+Arrows
+Text: Up, Key: 1073741906
+Text: Left, Key: 1073741904
+Text: Down, Key: 1073741905
+Text: RIght, Key: 1073741903
+
+Function keys
+Text: F1, Key: 1073741882
+Text: F2, Key: 1073741883
+Text: F3, Key: 1073742051
+Text: F4, Key: 1073741885
+Text: F5, Key: 1073741886
+Text: F6, Key: 1073741887
+Text: F7, Key: 1073741888
+Text: F8, Key: 1073741889
+Text: F9, Key: 1073741890
+Text: F10, Key: 1073741891
+Text: F11, Key: 1073741892
+Text: F12, Key: 1073741893
