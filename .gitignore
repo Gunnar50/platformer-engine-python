@@ -4,4 +4,4 @@ PyEng/__pycache__
 ErrorLogs/
 
 # Key mappings are generated locally
-shared/key_mappings.py
+src/shared/key_mappings.py
