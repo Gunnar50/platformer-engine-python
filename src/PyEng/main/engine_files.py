@@ -13,7 +13,8 @@ class EngineFiles:
   GUI_FOLDER = DATA_FOLDER / 'GUI'
   SOUNDS_FOLDER = DATA_FOLDER / 'sounds'
   FONT_FOLDER = DATA_FOLDER / 'fonts'
-  KEY_MAPPINGS = DATA_FOLDER / 'config/key_mappings.json'
+  GAME_MAPPINGS = DATA_FOLDER / 'config/game_mappings.json'
+  EDITOR_MAPPINGS = DATA_FOLDER / 'config/level_editor_mappings.json'
 
   DEFAULT_FONT_ATLAS = FONT_FOLDER / 'default.png'
   DEFAULT_FONT_META = FONT_FOLDER / 'default.fnt'
