@@ -14,8 +14,8 @@ def load_json(file_path):
 
 
 # Function to generate enum class from JSON mapping
-def generate_enum_class(class_name: str, key_mapping: list[dict[str, Any]]):
-  lines = [f'class {class_name}(enum.Enum):']
+def generate_class(class_name: str, key_mapping: list[dict[str, Any]]):
+  lines = [f'class {class_name}(MappingBase):']
   for mapping in key_mapping:
     label = mapping.get('label')
     if label is None:
@@ -31,10 +31,10 @@ def main():
   editor_mapping = load_json(editor_mappings_path)
 
   # Generate the enum classes as a string
-  game_mapping_class = generate_enum_class('GameMapping',
-                                           game_mapping.get('config'))
-  editor_mapping_class = generate_enum_class('EditorMapping',
-                                             editor_mapping.get('config'))
+  game_mapping_class = generate_class('GameMapping', game_mapping.get('config'))
+  editor_mapping_class = generate_class('EditorMapping',
+                                        editor_mapping.get('config'))
+  base_class = 'class MappingBase(enum.Enum):\n  pass'
 
   updated_content = '\n'.join([
       '# Auto generated from config files',
@@ -42,7 +42,8 @@ def main():
       '# Located at: data/config/*.json',
       'import enum',
   ])
-  updated_content += f'\n\n\n{game_mapping_class}\n'
+  updated_content += f'\n\n\n{base_class}\n'
+  updated_content += f'\n\n{game_mapping_class}\n'
   updated_content += f'\n\n{editor_mapping_class}\n'
 
   output_path.parent.mkdir(parents=True, exist_ok=True)
