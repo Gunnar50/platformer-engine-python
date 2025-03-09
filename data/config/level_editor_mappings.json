@@ -31,6 +31,12 @@
       "input_id": 1073741905
     },
     {
+      "label": "control",
+      "type": "button",
+      "input_name": "left_control",
+      "input_id": 1073742048
+    },
+    {
       "label": "mouse_left",
       "type": "mouse",
       "input_name": "mouse_left",

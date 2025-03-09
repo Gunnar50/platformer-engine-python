@@ -16,11 +16,15 @@ class LevelEditor:
       self.game_manager.update()
       self.engine.update()
 
-      if self.input.pressed(key_mappings.EditorMapping.DOWN):
-        print('DOWN')
+      if self.input.pressed(key_mappings.EditorMapping.UP):
+        print('UP')
       if self.input.pressed(key_mappings.EditorMapping.MOUSE_LEFT):
         print('MOUSE_LEFT')
-        print(self.input.mouse.position)
+
+      if self.input.holding(
+          key_mappings.EditorMapping.CONTROL) and self.input.pressed(
+              key_mappings.EditorMapping.UP):
+        print('CONTROL + UP')
 
 
 if __name__ == '__main__':
