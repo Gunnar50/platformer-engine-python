@@ -30,4 +30,4 @@ editor:
 	python level_editor.py
 
 generate_mappings:
-	python scripts/generate_mappings.py
+	./scripts/generate_mappings.sh
