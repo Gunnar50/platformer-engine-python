@@ -20,6 +20,7 @@ class EngineConfigs:
   default_state = State()
 
   debug = True
+  is_editor = False
 
   @staticmethod
   def get_default_configs():

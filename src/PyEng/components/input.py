@@ -1,11 +1,12 @@
 import pathlib
 import sys
 import time
+from typing import Type
 
 import pygame
 
 from src.PyEng.components.components import SystemComponent
-from src.shared import api, io
+from src.shared import api, io, key_mappings
 from src.shared.debug import LOGGER
 
 
@@ -44,11 +45,12 @@ class InputState:
 
 class Input(SystemComponent):
 
-  def __init__(self, key_mappings_path: pathlib.Path):
+  def __init__(self, key_mappings_path: pathlib.Path,
+               mapping_type: Type[key_mappings.MappingBase]):
     SystemComponent.__init__(self)
     self.config = io.load_model_from_json(key_mappings_path, api.InputConfig)
     self.input = {
-        api.KeyMapping(mapping.label): InputState(
+        mapping_type(mapping.label): InputState(
             mapping.label, mapping.type, mapping.input_name,
             mapping.input_id) for mapping in self.config.config
     }
@@ -56,7 +58,7 @@ class Input(SystemComponent):
     self.keyboard = Keyboard(self.input)
     self.mouse = Mouse(self.input)
 
-  def pressed(self, key: api.KeyMapping) -> bool:
+  def pressed(self, key: key_mappings.MappingBase) -> bool:
     return self.input[key].just_pressed if key in self.input else False
 
   def holding(self, key) -> bool:
@@ -80,7 +82,7 @@ class Input(SystemComponent):
 
 class Keyboard:
 
-  def __init__(self, input_config: dict[api.KeyMapping, InputState]):
+  def __init__(self, input_config: dict[key_mappings.MappingBase, InputState]):
     self.input = input_config
 
   def update(self, event: pygame.event.Event):
@@ -103,7 +105,7 @@ class Keyboard:
 
 class Mouse:
 
-  def __init__(self, input_config: dict[api.KeyMapping, InputState]):
+  def __init__(self, input_config: dict[key_mappings.MappingBase, InputState]):
     self.input = input_config
     self.position = pygame.Vector2(0, 0)
     self.ui_position = pygame.Vector2(0, 0)

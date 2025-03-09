@@ -1,7 +1,7 @@
 from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PlatformerGame.main.game_manager import GameManager
 from src.PyEng.main.engine import Engine
-from src.shared import api
+from src.shared import key_mappings
 
 
 class EngineTester:
@@ -29,9 +29,9 @@ class GameApp:
       self.game_manager.update()
       self.engine.update()
 
-      if self.input.pressed(api.KeyMapping.DOWN):
+      if self.input.pressed(key_mappings.GameMapping.DOWN):
         print('DOWN')
-      if self.input.pressed(api.KeyMapping.MOUSE_LEFT):
+      if self.input.pressed(key_mappings.GameMapping.MOUSE_LEFT):
         print('MOUSE_LEFT')
         print(self.input.mouse.position)
 

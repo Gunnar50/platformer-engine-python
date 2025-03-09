@@ -8,7 +8,7 @@ from src.PyEng.main.engine_config import EngineConfigs
 from src.PyEng.main.engine_files import EngineFiles
 from src.PyEng.utils.debugger import Debugger
 from src.PyEng.utils.error_manager import ErrorManager
-from src.shared import exceptions
+from src.shared import exceptions, key_mappings
 
 
 class Engine:
@@ -65,7 +65,11 @@ class Engine:
     )
 
     # Set up keyboard and mouse inputs
-    self.input = Input(EngineFiles.KEY_MAPPINGS)
+    if configs.is_editor:
+      self.input = Input(EngineFiles.EDITOR_MAPPINGS,
+                         key_mappings.EditorMapping)
+    else:
+      self.input = Input(EngineFiles.GAME_MAPPINGS, key_mappings.GameMapping)
     self.state_manager = StateManager(configs.default_state,
                                       configs.initial_state)
     # self.timer = FrameTimer(configs.fps)
