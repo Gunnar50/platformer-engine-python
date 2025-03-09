@@ -61,10 +61,10 @@ class Input(SystemComponent):
   def pressed(self, key: key_mappings.MappingBase) -> bool:
     return self.input[key].just_pressed if key in self.input else False
 
-  def holding(self, key) -> bool:
+  def holding(self, key: key_mappings.MappingBase) -> bool:
     return self.input[key].pressed if key in self.input else False
 
-  def released(self, key) -> bool:
+  def released(self, key: key_mappings.MappingBase) -> bool:
     return self.input[key].just_released if key in self.input else False
 
   def update(self):
@@ -90,8 +90,6 @@ class Keyboard:
       if event.key == pygame.K_ESCAPE:
         pygame.quit()
         sys.exit()
-      elif event.key == pygame.K_SPACE:
-        LOGGER.info(self.input)
 
       for state in self.input.values():
         if state.type == api.InputType.BUTTON and event.key == state.input_id:
