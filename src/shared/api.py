@@ -30,15 +30,3 @@ class InputMappings(pydantic.BaseModel):
 
 class InputConfig(pydantic.BaseModel):
   config: list[InputMappings]
-
-
-# Auto generated from config files
-class KeyMapping(enum.Enum):
-  QUIT = 'quit'
-  RIGHT = 'right'
-  LEFT = 'left'
-  UP = 'up'
-  DOWN = 'down'
-  MOUSE_LEFT = 'mouse_left'
-  MOUSE_MIDDLE = 'mouse_middle'
-  MOUSE_RIGHT = 'mouse_right'
