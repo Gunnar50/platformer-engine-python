@@ -37,7 +37,8 @@ class Engine:
     self.components_manager.update()
 
   def render(self) -> None:
-    self.renderer.render()
+    raise NotImplementedError
+    # self.renderer.render()
 
   def check_assets_folder(self):
     if not os.path.exists(EngineFiles.DATA_FOLDER):
@@ -78,15 +79,18 @@ class Engine:
     # )
 
   def get_delta(self) -> float:
-    return self.timer.get_delta()
+    raise NotImplementedError
+    # return self.timer.get_delta()
 
   def get_current_time(self) -> float:
-    return self.timer.get_time()
+    raise NotImplementedError
+    # return self.timer.get_time()
 
   def close_engine(self) -> None:
+    raise NotImplementedError
     # BackgroundLoader.clean_up()
     # Ui.clean_up()
-    self.window.destroy()
+    # self.window.destroy()
 
   @classmethod
   def create(
