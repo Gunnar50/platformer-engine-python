@@ -37,9 +37,9 @@ class TestEngine:
     engine_instance = Engine.get_instance()
     assert isinstance(engine_instance, Engine)
 
-  @mock.patch('os.path.exists')
+  @mock.patch('EngineFiles.DATA_FOLDER.exists')
   def test_missing_assets_folder(self, mock_exists: mock.Mock):
-    # Patch os.path.exists to return False
+    # Patch path.exists to return False
     mock_exists.return_value = False
     with pytest.raises(exceptions.IllegalStateException):
       Engine.create()

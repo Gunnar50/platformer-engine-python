@@ -20,7 +20,8 @@ class BlueprintLoader:
 
   def load_folder(self, folder: pathlib.Path,
                   repository: HashRegistry[Any]) -> None:
-    if not os.path.exists(folder):
+
+    if not folder.exists():
       raise exceptions.FilePathNotFound(
           f'The following file path was not found: {folder}')
 

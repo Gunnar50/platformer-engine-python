@@ -16,7 +16,7 @@ ModelType = TypeVar('ModelType', bound=pydantic.BaseModel)
 
 
 def load_json(file_path: pathlib.Path) -> Any:
-  if os.path.exists(file_path):
+  if file_path.exists():
     with open(file_path, 'r') as f:
       return json.load(f)
   else:

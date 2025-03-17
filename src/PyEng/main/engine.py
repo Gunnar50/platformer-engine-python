@@ -41,7 +41,7 @@ class Engine:
     # self.renderer.render()
 
   def check_assets_folder(self):
-    if not os.path.exists(EngineFiles.DATA_FOLDER):
+    if not EngineFiles.DATA_FOLDER.exists():
       raise exceptions.IllegalStateException(
           f"Can't create engine - assets folder not found in root directory: {EngineFiles.ROOT_FOLDER}."
       )
