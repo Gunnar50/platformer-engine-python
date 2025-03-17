@@ -1,7 +1,6 @@
 import dataclasses
 import enum
 import json
-import os
 import pathlib
 from typing import Any, Type, TypeVar, cast
 

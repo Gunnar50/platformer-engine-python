@@ -1,5 +1,3 @@
-import os
-
 from src.PyEng.components.components import ComponentManager
 from src.PyEng.components.input import Input
 from src.PyEng.components.state_manager import StateManager

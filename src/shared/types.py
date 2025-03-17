@@ -1,7 +1,5 @@
-import os
-from typing import Sequence, TypeAlias, TypeVar, Union
+from typing import Sequence, Union
 
-import pydantic
 import pygame
 
 Coordinate = Union[tuple[float, float], Sequence[float]]
