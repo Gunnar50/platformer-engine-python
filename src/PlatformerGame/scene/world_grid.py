@@ -2,6 +2,7 @@ from typing import Optional
 
 import pygame
 
+from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PlatformerGame.scene.tile import Tile
 from src.PyEng.components.components import GameComponent
 from src.PyEng.main.engine import Engine
@@ -38,12 +39,15 @@ class WorldGrid(serialisers.Exportable, GameComponent):
   def setup_grid(self):
     for i in range(10):
       # Create example tiles
-      tile = self.tile_blueprints.get('grass').create_instance(3 + i, 10, self)
-      tile2 = self.tile_blueprints.get('dirt').create_instance(10, 5 + i, self)
-      self.tile_map.update({
-          (tile.position.x, tile.position.y): tile,
-          (tile2.position.x, tile2.position.y): tile2,
-      })
+      tile = self.create_tile(3 + i, 10, 'grass')
+      tile2 = self.create_tile(10, 5 + i, 'dirt')
+      self.add_tile(tile)
+      self.add_tile(tile2)
+
+  def create_tile(self, x: int, y: int, tile_type: str) -> Tile:
+    tile = self.tile_blueprints.get(tile_type).create_instance(x, y, self)
+    self.add_tile(tile)
+    return tile
 
   def add_tile(self, tile: Tile) -> None:
     self.tile_map.update({(tile.position.x, tile.position.y): tile})
@@ -61,7 +65,17 @@ class WorldGrid(serialisers.Exportable, GameComponent):
   def get_tile(self, x: int, y: int) -> Optional[Tile]:
     return self.tile_map.get((x, y))
 
+  def draw_grid(self, screen: pygame.Surface):
+    for x in range(0, BuildConfig.window_width, BuildConfig.tile_width):
+      pygame.draw.line(screen, (150, 150, 150), (x, 0),
+                       (x, BuildConfig.window_height))
+
+    for y in range(0, BuildConfig.window_height, BuildConfig.tile_height):
+      pygame.draw.line(screen, (150, 150, 150), (0, y),
+                       (BuildConfig.window_width, y))
+
   def render(self, screen: pygame.Surface):
+    self.draw_grid(screen)
     for tile in self.tile_map.values():
       tile.render_tile(screen)
 

@@ -76,12 +76,12 @@ class Tile(GameObject):
   def get_tile_type(self) -> 'TileType':
     return self.components.tile_type
 
-  def render_tile(self, screen: pygame.Surface):
+  def render_tile(self, screen: pygame.Surface) -> None:
     screen.blit(
         self.components.images[self.variant],
         (
             self.position.x * BuildConfig.tile_width,
-            self.position.y * BuildConfig.tile_width,
+            self.position.y * BuildConfig.tile_height,
         ),
     )
 
