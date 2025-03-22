@@ -2,6 +2,7 @@ import time
 
 import pygame
 
+from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PyEng.components.components import SystemComponent
 
 
@@ -29,15 +30,14 @@ class Window(SystemComponent):
     self.background_colour = background_colour
     self.window_width = window_width
     self.window_height = window_height
-    self.scale_factor = 2
     self.start_time = time.time()
 
     self.screen = pygame.display.set_mode(size=(window_width, window_height),
                                           flags=fullscreen,
                                           vsync=vsync)
     self.display = pygame.Surface(
-        (window_width // self.scale_factor,
-         window_height // self.scale_factor)).convert_alpha()
+        (window_width // BuildConfig.scale_factor,
+         window_height // BuildConfig.scale_factor)).convert_alpha()
     self.debug_display = pygame.Surface(
         (window_width, window_height)).convert_alpha()
 
