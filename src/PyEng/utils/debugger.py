@@ -1,4 +1,5 @@
 from typing import Any
+
 import pygame
 
 from src.PyEng.components.components import SystemComponent

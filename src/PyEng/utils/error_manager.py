@@ -1,12 +1,12 @@
+import datetime
+import logging
 import pathlib
+import platform
 import random
+import re
+import socket
 import sys
 import traceback
-import logging
-import datetime
-import platform
-import socket
-import re
 from types import TracebackType
 from typing import Optional, Type
 

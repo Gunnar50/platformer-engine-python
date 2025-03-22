@@ -1,4 +1,3 @@
-from numpy import tile
 from src.PlatformerGame.main.configs.build_config import EditorConfig
 from src.PlatformerGame.main.game_manager import GameManager
 from src.PyEng.main.engine import Engine
