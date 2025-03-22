@@ -7,6 +7,9 @@ class GameSession(GameComponent):
   def __init__(self) -> None:
     self.scene = Scene()
 
+  def get_scene(self) -> Scene:
+    return self.scene
+
   def update(self):
     self.scene.update()
     self.scene.render()
