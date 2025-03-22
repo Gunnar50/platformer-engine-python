@@ -10,12 +10,6 @@ from src.shared import api
 from src.shared.hash_registry import Registrable
 
 
-class TileType(enum.Enum):
-  GRASS = 'grass'
-  DIRT = 'dirt'
-  BUSH = 'bush'
-
-
 @dataclasses.dataclass
 class Blueprint(Registrable):
   """
@@ -57,7 +51,7 @@ class ItemBlueprint(Blueprint):
 
 @dataclasses.dataclass
 class TileBlueprint(Blueprint):
-  tile_type: TileType
+  tile_type: api.TileType
 
   def create_instance(
       self,

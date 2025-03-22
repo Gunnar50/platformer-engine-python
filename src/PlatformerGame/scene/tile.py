@@ -4,11 +4,10 @@ from typing import TYPE_CHECKING, Optional
 import pygame
 
 from src.PlatformerGame.main.configs.build_config import BuildConfig
+from src.shared import api
 
 if TYPE_CHECKING:
-  from src.PlatformerGame.repository.game_components import (Position,
-                                                             TileBlueprint,
-                                                             TileType)
+  from src.PlatformerGame.repository.game_components import (TileBlueprint)
   from src.PlatformerGame.scene.world_grid import WorldGrid
 
 
@@ -34,7 +33,7 @@ class GameObject:
 
   def __init__(
       self,
-      position: 'Position',
+      position: api.Position,
       world_grid: 'WorldGrid',
   ) -> None:
     self.position = position
@@ -45,7 +44,7 @@ class Tile(GameObject):
 
   def __init__(
       self,
-      position: 'Position',
+      position: api.Position,
       world_grid: 'WorldGrid',
       components: 'TileBlueprint',
   ) -> None:
@@ -70,10 +69,10 @@ class Tile(GameObject):
   def get_tile_id(self) -> int:
     return (self.position.x * self.grid.world_size) + self.position.y
 
-  def get_position(self) -> 'Position':
+  def get_position(self) -> api.Position:
     return self.position
 
-  def get_tile_type(self) -> 'TileType':
+  def get_tile_type(self) -> api.TileType:
     return self.components.tile_type
 
   def render_tile(self, screen: pygame.Surface) -> None:

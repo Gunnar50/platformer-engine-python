@@ -41,3 +41,9 @@ class Position:
 
   def __iter__(self) -> Iterator[int]:
     return iter((self.x, self.y))
+
+
+class TileType(enum.Enum):
+  GRASS = 'grass'
+  DIRT = 'dirt'
+  BUSH = 'bush'
