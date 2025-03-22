@@ -53,5 +53,11 @@ class HashRegistry(Generic[RegistrableType], Iterable):
       )
     return item
 
+  def get_all(self) -> dict[str, RegistrableType]:
+    return self.map
+
+  def __getitem__(self, index: int) -> str:
+    return list(self.map)[index]
+
   def __iter__(self) -> Iterator[RegistrableType]:
     return iter(self.map.values())
