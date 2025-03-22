@@ -6,14 +6,8 @@ import pygame
 from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PlatformerGame.scene.tile import Tile
 from src.PlatformerGame.scene.world_grid import WorldGrid
-from src.PyEng.components.components import GameComponent
+from src.shared import api
 from src.shared.hash_registry import Registrable
-
-
-@dataclasses.dataclass
-class Position(GameComponent):
-  x: int
-  y: int
 
 
 class TileType(enum.Enum):
@@ -71,4 +65,4 @@ class TileBlueprint(Blueprint):
       position_y: int,
       grid: WorldGrid,
   ) -> Tile:
-    return Tile(Position(position_x, position_y), grid, self)
+    return Tile(api.Position(position_x, position_y), grid, self)

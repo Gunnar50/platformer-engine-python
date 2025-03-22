@@ -5,9 +5,9 @@ from typing import Type
 
 import pygame
 
+from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PyEng.components.components import SystemComponent
 from src.shared import api, io, key_mappings
-from src.shared.debug import LOGGER
 
 
 class InputState:
@@ -105,13 +105,18 @@ class Mouse:
 
   def __init__(self, input_config: dict[key_mappings.MappingBase, InputState]):
     self.input = input_config
-    self.position = pygame.Vector2(0, 0)
-    self.ui_position = pygame.Vector2(0, 0)
-    self.movement = pygame.Vector2(0, 0)
+    self.position = api.Position(0, 0)
+    self.ui_position = api.Position(0, 0)
+    self.movement = api.Position(0, 0)
+
+  def get_position(self) -> api.Position:
+    return api.Position(self.position.x // BuildConfig.tile_width,
+                        self.position.y // BuildConfig.tile_height)
 
   def update(self, event: pygame.event.Event):
     mx, my = pygame.mouse.get_pos()
-    self.position = pygame.Vector2(mx, my)
+    self.position = api.Position(mx // BuildConfig.scale_factor,
+                                 my // BuildConfig.scale_factor)
     self.ui_x, self.ui_y = self.position.x // 2, self.position.y // 2
 
     if event.type == pygame.MOUSEBUTTONDOWN:

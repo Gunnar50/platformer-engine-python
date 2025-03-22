@@ -1,4 +1,6 @@
+import dataclasses
 import enum
+from typing import Iterator
 
 import pydantic
 import pygame
@@ -30,3 +32,12 @@ class InputMappings(pydantic.BaseModel):
 
 class InputConfig(pydantic.BaseModel):
   config: list[InputMappings]
+
+
+@dataclasses.dataclass
+class Position:
+  x: int
+  y: int
+
+  def __iter__(self) -> Iterator[int]:
+    return iter((self.x, self.y))
