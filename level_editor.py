@@ -17,17 +17,21 @@ class LevelEditor:
       self.game_manager.update()
       self.engine.update()
 
-      if self.input.pressed(key_mappings.EditorMapping.UP):
-        print('UP')
       if self.input.pressed(key_mappings.EditorMapping.MOUSE_LEFT):
         mx, my = self.input.mouse.get_position()
-        print(mx, my)
         self.scene.world_grid.create_tile(mx, my, 'grass')
+      if self.input.pressed(key_mappings.EditorMapping.MOUSE_RIGHT):
+        mx, my = self.input.mouse.get_position()
+        self.scene.world_grid.remove_tile(mx, my)
 
+      # Use if and elif when checking for multiple key presses
+      # TODO: Find a better way to handle multiple key presses
       if self.input.holding(
           key_mappings.EditorMapping.CONTROL) and self.input.pressed(
               key_mappings.EditorMapping.UP):
         print('CONTROL + UP')
+      elif self.input.pressed(key_mappings.EditorMapping.UP):
+        print('UP')
 
 
 if __name__ == '__main__':

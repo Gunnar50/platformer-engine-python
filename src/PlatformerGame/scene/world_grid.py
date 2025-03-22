@@ -39,15 +39,25 @@ class WorldGrid(serialisers.Exportable, GameComponent):
   def setup_grid(self):
     for i in range(10):
       # Create example tiles
-      tile = self.create_tile(3 + i, 10, 'grass')
-      tile2 = self.create_tile(10, 5 + i, 'dirt')
-      self.add_tile(tile)
-      self.add_tile(tile2)
+      self.create_tile(3 + i, 10, 'grass')
+      self.create_tile(10, 5 + i, 'dirt')
 
   def create_tile(self, x: int, y: int, tile_type: str) -> Tile:
-    tile = self.tile_blueprints.get(tile_type).create_instance(x, y, self)
-    self.add_tile(tile)
-    return tile
+    existing_tile = self.tile_map.get((x, y))
+
+    # Only create a new tile if position is empty or tile type differs
+    if not existing_tile or existing_tile.get_tile_type() != tile_type:
+      tile = self.tile_blueprints.get(tile_type).create_instance(x, y, self)
+      self.add_tile(tile)
+      return tile
+    else:
+      return existing_tile
+
+  def remove_tile(self, x: int, y: int) -> Optional[Tile]:
+    if (x, y) in self.tile_map:
+      return self.tile_map.pop((x, y))
+    else:
+      return None
 
   def add_tile(self, tile: Tile) -> None:
     self.tile_map.update({(tile.position.x, tile.position.y): tile})
