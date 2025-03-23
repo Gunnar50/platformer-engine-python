@@ -1,6 +1,8 @@
+import pathlib
 from src.PlatformerGame.main.configs.build_config import EditorConfig
 from src.PlatformerGame.main.game_manager import GameManager
 from src.PyEng.main.engine import Engine
+from src.PyEng.main.engine_files import EngineFiles
 from src.shared import api, key_mappings
 
 
@@ -37,12 +39,11 @@ class LevelEditor:
 
       # Use if and elif when checking for multiple key presses
       # TODO: Find a better way to handle multiple key presses
-      if self.input.holding(
-          key_mappings.EditorMapping.CONTROL) and self.input.pressed(
-              key_mappings.EditorMapping.UP):
-        print('CONTROL + UP')
-      elif self.input.pressed(key_mappings.EditorMapping.UP):
-        print('UP')
+      if (self.input.holding(key_mappings.EditorMapping.CONTROL) and
+          self.input.pressed(key_mappings.EditorMapping.UP)):
+        self.scene.world_grid.save(EngineFiles.DATA_FOLDER / 'map.map')
+      elif self.input.pressed(key_mappings.EditorMapping.LEFT):
+        self.scene.world_grid.load(EngineFiles.DATA_FOLDER / 'map.map')
 
 
 if __name__ == '__main__':

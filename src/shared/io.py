@@ -1,3 +1,4 @@
+import ast
 import dataclasses
 import enum
 import json
@@ -12,6 +13,16 @@ from src.shared.debug import LOGGER
 
 BlueprintType = TypeVar('BlueprintType')
 ModelType = TypeVar('ModelType', bound=pydantic.BaseModel)
+
+
+def write_data(file_path: pathlib.Path, data: Any) -> None:
+  with open(file_path, 'w') as f:
+    f.write(str(data))
+
+
+def write_json(file_path: pathlib.Path, data: Any) -> None:
+  with open(file_path, 'w') as f:
+    json.dump(data, f, indent=2)
 
 
 def load_json(file_path: pathlib.Path) -> Any:
