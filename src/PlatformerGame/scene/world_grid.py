@@ -38,31 +38,45 @@ class WorldGrid(serialisers.Exportable, GameComponent):
     self.setup_grid()
 
   def save(self, file_path: pathlib.Path) -> None:
-    output = {'tile_map': {}}
+    output = {'tile_map': []}
     for position in self.tile_map:
-      output['tile_map'][str(position)] = {
-          'x': self.tile_map[position].position.x,
-          'y': self.tile_map[position].position.y,
-          'tile_type': self.tile_map[position].components.tile_type.value
-      }
+      output['tile_map'].append({
+          'position': [
+              self.tile_map[position].position.x,
+              self.tile_map[position].position.y,
+          ],
+          'layer': self.tile_map[position].layer,
+          'tile_type': self.tile_map[position].components.tile_type.value,
+      })
 
     io.write_json(file_path, output)
 
   def load(self, file_path: pathlib.Path) -> None:
     map_data = io.load_json(file_path)
-    for position in map_data['tile_map']:
-      tile_data = map_data['tile_map'][position]
-      self.create_tile(tile_data['x'], tile_data['y'],
-                       api.TileType(tile_data['tile_type']))
+    for tile_data in map_data['tile_map']:
+      x, y = tile_data['position'][0], tile_data['position'][0]
+      self.create_tile(x, y, api.TileType(tile_data['tile_type']), 0, 0)
 
   def setup_grid(self):
     for i in range(10):
       # Create example tiles
-      self.create_tile(3 + i, 10, api.TileType.GRASS)
-      self.create_tile(10, 5 + i, api.TileType.DIRT)
+      self.create_tile(3 + i, 10, api.TileType.GRASS, 0, 0)
+      self.create_tile(10, 5 + i, api.TileType.DIRT, 0, 0)
 
-  def create_tile(self, x: int, y: int, tile_type: api.TileType) -> Tile:
-    tile = self.tile_blueprints.get(tile_type.value).create_instance(x, y, self)
+  def create_tile(
+      self,
+      x: int,
+      y: int,
+      tile_type: api.TileType,
+      variant: int,
+      layer: int,
+  ) -> Tile:
+    tile_bluprint = self.tile_blueprints.get(tile_type.value)
+    tile = tile_bluprint.create_instance(position_x=x,
+                                         position_y=y,
+                                         grid=self,
+                                         variant=variant,
+                                         layer=layer)
     self.add_tile(tile)
     return tile
 

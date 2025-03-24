@@ -58,5 +58,13 @@ class TileBlueprint(Blueprint):
       position_x: int,
       position_y: int,
       grid: WorldGrid,
+      variant: int,
+      layer: int,
   ) -> Tile:
-    return Tile(api.Position(position_x, position_y), grid, self)
+    return Tile(
+        api.Position(position_x, position_y),
+        grid,
+        self,
+        variant,
+        layer,
+    )

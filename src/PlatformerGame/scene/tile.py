@@ -7,7 +7,7 @@ from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.shared import api
 
 if TYPE_CHECKING:
-  from src.PlatformerGame.repository.game_components import (TileBlueprint)
+  from src.PlatformerGame.repository.game_components import TileBlueprint
   from src.PlatformerGame.scene.world_grid import WorldGrid
 
 
@@ -47,10 +47,13 @@ class Tile(GameObject):
       position: api.Position,
       world_grid: 'WorldGrid',
       components: 'TileBlueprint',
+      variant: int,
+      layer: int,
   ) -> None:
     GameObject.__init__(self, position, world_grid)
     self.components = components
-    self.variant = 0
+    self.variant = variant
+    self.layer = layer
 
   def get_neighbours(self) -> list[Optional['Tile']]:
     return [
