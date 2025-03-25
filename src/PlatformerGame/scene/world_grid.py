@@ -30,12 +30,15 @@ class WorldGrid(serialisers.Exportable, GameComponent):
   def __init__(self, scene: Scene, world_size: int) -> None:
     serialisers.Exportable.__init__(self)
     GameComponent.__init__(self)
-    self.tile_map: dict[tuple[int, int], Tile] = {}
+    self.tile_map: dict[tuple[int, int, int], Tile] = {}
     self.scene = scene
     self.world_size = world_size
     game_manager_component = self.components_manager.get_game_manager()
     self.tile_blueprints = game_manager_component.get_blueprint_database().tiles
     self.setup_grid()
+
+  def reset(self):
+    self.tile_map.clear()
 
   def save(self, file_path: pathlib.Path) -> None:
     output = {'tile_map': []}
@@ -52,10 +55,12 @@ class WorldGrid(serialisers.Exportable, GameComponent):
     io.write_json(file_path, output)
 
   def load(self, file_path: pathlib.Path) -> None:
+    self.reset()
     map_data = io.load_json(file_path)
     for tile_data in map_data['tile_map']:
-      x, y = tile_data['position'][0], tile_data['position'][0]
-      self.create_tile(x, y, api.TileType(tile_data['tile_type']), 0, 0)
+      x, y = tile_data['position'][0], tile_data['position'][1]
+      layer = tile_data['layer']
+      self.create_tile(x, y, api.TileType(tile_data['tile_type']), 0, layer)
 
   def setup_grid(self):
     for i in range(10):
@@ -80,27 +85,22 @@ class WorldGrid(serialisers.Exportable, GameComponent):
     self.add_tile(tile)
     return tile
 
-  def remove_tile(self, x: int, y: int) -> Optional[Tile]:
-    if (x, y) in self.tile_map:
-      return self.tile_map.pop((x, y))
-
+  def remove_tile(self, x: int, y: int, layer: int) -> Optional[Tile]:
+    if (x, y, layer) in self.tile_map:
+      return self.tile_map.pop((x, y, layer))
     return None
 
   def add_tile(self, tile: Tile) -> None:
-    self.tile_map.update({(tile.position.x, tile.position.y): tile})
+    self.tile_map.update({(tile.position.x, tile.position.y, tile.layer): tile})
 
-  def get_tile_from_id(self, id: int):
-    x, y = id // self.world_size, id % self.world_size
-    return self.get_tile(x, y)
-
-  def get_tile_at(self, x: float, y: float) -> Optional[Tile]:
+  def get_tile_at(self, x: float, y: float, layer: int) -> Optional[Tile]:
     if x > 0 and y > 0:
-      return self.get_tile(int(x), int(y))
+      return self.get_tile(int(x), int(y), layer)
     else:
       return None
 
-  def get_tile(self, x: int, y: int) -> Optional[Tile]:
-    return self.tile_map.get((x, y))
+  def get_tile(self, x: int, y: int, layer: int) -> Optional[Tile]:
+    return self.tile_map.get((x, y, layer))
 
   def draw_grid(self, screen: pygame.Surface):
     for x in range(0, BuildConfig.window_width, BuildConfig.tile_width):
@@ -111,10 +111,12 @@ class WorldGrid(serialisers.Exportable, GameComponent):
       pygame.draw.line(screen, (150, 150, 150), (0, y),
                        (BuildConfig.window_width, y))
 
-  def render(self, screen: pygame.Surface):
+  def render(self, screen: pygame.Surface) -> None:
     self.draw_grid(screen)
-    for tile in self.tile_map.values():
-      tile.render_tile(screen)
+    positions = sorted(self.tile_map.keys(), key=lambda position: position[2])
+    for position in positions:
+      if tile := self.tile_map.get(position):
+        tile.render_tile(screen)
 
   def get_serialiser(self) -> serialisers.Serialiser:
     return WorldGridSerialiser()

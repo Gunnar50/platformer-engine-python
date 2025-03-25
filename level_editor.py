@@ -15,6 +15,7 @@ class LevelEditor:
     self.scene = self.game_manager.current_session.get_scene()
     self.tile_types = list(api.TileType)
     self.variant = 0
+    self.layer = 0
     self.current_tile_type = self.tile_types[self.variant]
 
   def run(self) -> None:
@@ -25,10 +26,12 @@ class LevelEditor:
       # Adding and removing tiles
       if self.input.holding(key_mappings.EditorMapping.MOUSE_RIGHT):
         mx, my = self.input.mouse.get_position()
-        self.scene.world_grid.remove_tile(mx, my)
+        self.scene.world_grid.remove_tile(mx, my, self.layer)
+
       if self.input.holding(key_mappings.EditorMapping.MOUSE_LEFT):
         mx, my = self.input.mouse.get_position()
-        self.scene.world_grid.create_tile(mx, my, self.current_tile_type)
+        self.scene.world_grid.create_tile(mx, my, self.current_tile_type,
+                                          self.variant, self.layer)
       # Update tile type
       if self.input.pressed(key_mappings.EditorMapping.UP):
         self.variant = (self.variant + 1) % len(self.tile_types)
@@ -39,9 +42,9 @@ class LevelEditor:
 
       # Use if and elif when checking for multiple key presses
       # TODO: Find a better way to handle multiple key presses
-      if (self.input.holding(key_mappings.EditorMapping.CONTROL) and
-          self.input.pressed(key_mappings.EditorMapping.UP)):
+      if self.input.pressed(key_mappings.EditorMapping.RIGHT):
         self.scene.world_grid.save(EngineFiles.DATA_FOLDER / 'map.map')
+        print('Saved!')
       elif self.input.pressed(key_mappings.EditorMapping.LEFT):
         self.scene.world_grid.load(EngineFiles.DATA_FOLDER / 'map.map')
 
