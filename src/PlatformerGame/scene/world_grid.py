@@ -49,6 +49,7 @@ class WorldGrid(serialisers.Exportable, GameComponent):
               self.tile_map[position].position.y,
           ],
           'layer': self.tile_map[position].layer,
+          'variant': self.tile_map[position].variant,
           'tile_type': self.tile_map[position].components.tile_type.value,
       })
 
@@ -60,7 +61,9 @@ class WorldGrid(serialisers.Exportable, GameComponent):
     for tile_data in map_data['tile_map']:
       x, y = tile_data['position'][0], tile_data['position'][1]
       layer = tile_data['layer']
-      self.create_tile(x, y, api.TileType(tile_data['tile_type']), 0, layer)
+      variant = tile_data['variant']
+      self.create_tile(x, y, api.TileType(tile_data['tile_type']), variant,
+                       layer)
 
   def setup_grid(self):
     for i in range(10):

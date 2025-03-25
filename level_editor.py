@@ -16,7 +16,8 @@ class LevelEditor:
     self.tile_types = list(api.TileType)
     self.variant = 0
     self.layer = 0
-    self.current_tile_type = self.tile_types[self.variant]
+    self.tile_type_index = 0
+    self.current_tile_type = self.tile_types[self.tile_type_index]
 
   def run(self) -> None:
     while True:
@@ -34,11 +35,11 @@ class LevelEditor:
                                           self.variant, self.layer)
       # Update tile type
       if self.input.pressed(key_mappings.EditorMapping.UP):
-        self.variant = (self.variant + 1) % len(self.tile_types)
-        self.current_tile_type = self.tile_types[self.variant]
+        self.tile_type_index = (self.tile_type_index + 1) % len(self.tile_types)
+        self.current_tile_type = self.tile_types[self.tile_type_index]
       if self.input.pressed(key_mappings.EditorMapping.DOWN):
-        self.variant = (self.variant - 1) % len(self.tile_types)
-        self.current_tile_type = self.tile_types[self.variant]
+        self.tile_type_index = (self.tile_type_index - 1) % len(self.tile_types)
+        self.current_tile_type = self.tile_types[self.tile_type_index]
 
       # Use if and elif when checking for multiple key presses
       # TODO: Find a better way to handle multiple key presses
