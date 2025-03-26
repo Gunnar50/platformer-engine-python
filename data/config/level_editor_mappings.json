@@ -53,6 +53,18 @@
       "type": "mouse",
       "input_name": "mouse_right",
       "input_id": 3
+    },
+    {
+      "label": "mouse_scroll_up",
+      "type": "mouse",
+      "input_name": "scroll_up",
+      "input_id": 4
+    },
+    {
+      "label": "mouse_scroll_down",
+      "type": "mouse",
+      "input_name": "scroll_down",
+      "input_id": 5
     }
   ]
 }
