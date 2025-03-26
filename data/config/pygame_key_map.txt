@@ -92,3 +92,8 @@ Text: F9, Key: 1073741890
 Text: F10, Key: 1073741891
 Text: F11, Key: 1073741892
 Text: F12, Key: 1073741893
+
+Mouse
+Left Click: 1
+Middle Click: 2
+Right Click: 3
