@@ -68,3 +68,18 @@ class TileBlueprint(Blueprint):
         variant,
         layer,
     )
+
+  def render_preview(
+      self,
+      screen: pygame.Surface,
+      position_x: int,
+      position_y: int,
+      variant: int,
+  ) -> None:
+    screen.blit(
+        self.images[variant],
+        (
+            position_x * BuildConfig.tile_width,
+            position_y * BuildConfig.tile_height,
+        ),
+    )
