@@ -67,7 +67,7 @@ class Tile(GameObject):
     relative_x, relative_y = direction.get_relative_pos()
     grid_x = self.position.x + relative_x
     grid_y = self.position.y + relative_y
-    return self.grid.get_tile(grid_x, grid_y)
+    return self.grid.get_tile(grid_x, grid_y, self.layer)
 
   def get_tile_id(self) -> int:
     return (self.position.x * self.grid.world_size) + self.position.y
