@@ -76,8 +76,10 @@ class TileBlueprint(Blueprint):
       position_y: int,
       variant: int,
   ) -> None:
+    image = self.images[variant].copy()
+    image.set_alpha(100)
     screen.blit(
-        self.images[variant],
+        image,
         (
             position_x * BuildConfig.tile_width,
             position_y * BuildConfig.tile_height,
