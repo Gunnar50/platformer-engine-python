@@ -35,9 +35,12 @@ class InputConfig(pydantic.BaseModel):
 
 
 @dataclasses.dataclass
-class Position:
+class Position(serialisers.Serialiser):
   x: int
   y: int
+
+  def export(self) -> dict[str, int]:
+    return {'x': self.x, 'y': self.y}
 
   def __iter__(self) -> Iterator[int]:
     return iter((self.x, self.y))

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional
 import pygame
 
 from src.PlatformerGame.main.configs.build_config import BuildConfig
-from src.shared import api
+from src.shared import api, serialisers
 
 if TYPE_CHECKING:
   from src.PlatformerGame.repository.game_components import TileBlueprint
@@ -40,7 +40,7 @@ class GameObject:
     self.grid = world_grid
 
 
-class Tile(GameObject):
+class Tile(GameObject, serialisers.Serialiser):
 
   def __init__(
       self,
@@ -86,6 +86,14 @@ class Tile(GameObject):
             self.position.y * BuildConfig.tile_height,
         ),
     )
+
+  def export(self):
+    return {
+        'position': self.position,
+        'variant': self.variant,
+        'layer': self.layer,
+        'tile_type': self.components.name,
+    }
 
   def __str__(self) -> str:
     return f'Tile({self.position.x}, {self.position.y})'

@@ -15,6 +15,22 @@ BlueprintType = TypeVar('BlueprintType')
 ModelType = TypeVar('ModelType', bound=pydantic.BaseModel)
 
 
+def export_data(data: Any) -> Any:
+  if isinstance(data, list):
+    return [export_data(item) for item in data]
+
+  elif isinstance(data, dict):
+    return {key: export_data(value) for key, value in data.items()}
+
+  elif isinstance(data, serialisers.Serialiser):
+    return export_data(data.export())
+
+  elif (isinstance(data, (int, str, float, bool))):
+    return data
+
+  return None
+
+
 def write_data(file_path: pathlib.Path, data: Any) -> None:
   with open(file_path, 'w') as f:
     f.write(str(data))
@@ -66,8 +82,7 @@ def get_data_model(
         ]
 
       # Check if we need to convert anything to a list
-      if (field.type is list or hasattr(field.type, '__origin__') and
-          field.type.__origin__ is list) and not isinstance(value, list):
+      if get_origin(field.type) is list and not isinstance(value, list):
         values[attr] = [value]
       else:
         values[attr] = value

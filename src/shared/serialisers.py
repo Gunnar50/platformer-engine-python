@@ -1,21 +1,9 @@
 import abc
+from typing import Any
 
 
 class Serialiser(abc.ABC):
 
   @abc.abstractmethod
-  def export(self, writer) -> None:
+  def export(self) -> Any:
     pass
-
-
-class NoExport(Serialiser):
-
-  def export(self, writer) -> None:
-    pass
-
-
-class Exportable(abc.ABC):
-
-  @abc.abstractmethod
-  def get_serialiser(self) -> Serialiser:
-    return NoExport()
