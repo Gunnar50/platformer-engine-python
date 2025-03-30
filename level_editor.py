@@ -9,14 +9,15 @@ from src.shared import api, key_mappings
 class LevelEditor:
 
   def __init__(self) -> None:
+    # Initialise the system
     self.engine = Engine.create(EditorConfig)
     self.game_manager = GameManager(self.engine)
+
+    # Get necessary components
     self.window = self.game_manager.components_manager.get_window()
     self.input = self.game_manager.components_manager.get_input()
     self.scene = self.game_manager.current_session.get_scene()
     self.world = self.scene.world_grid
-
-    self.mx, self.my = 0, 0
 
     # Tiles
     self.tiles_blueprint = self.game_manager.get_blueprint_database().tiles
@@ -27,6 +28,9 @@ class LevelEditor:
     self.tile_type_index = 0
     self.current_tile_type = self.tile_types[self.tile_type_index]
     self.selected_tile = self.tiles_blueprint.get(self.current_tile_type.value)
+
+    # Mouse position
+    self.mx, self.my = 0, 0
 
   def run(self) -> None:
     while True:
@@ -42,6 +46,7 @@ class LevelEditor:
         self.world.create_tile(self.mx, self.my, self.current_tile_type,
                                self.variant, self.layer)
 
+      # TODO: Find a better way to handle multiple key presses
       # Update tile type if control + scroll
       if self.input.holding(key_mappings.EditorMapping.CONTROL):
         if self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_UP):
@@ -66,16 +71,19 @@ class LevelEditor:
             self.current_tile_type.value)
         self.update_tile = False
 
-      # Use if and elif when checking for multiple key presses
-      # TODO: Find a better way to handle multiple key presses
       if self.input.pressed(key_mappings.EditorMapping.RIGHT):
         self.scene.world_grid.save(EngineFiles.DATA_FOLDER / 'map.map')
         print('Saved!')
       elif self.input.pressed(key_mappings.EditorMapping.LEFT):
         self.scene.world_grid.load(EngineFiles.DATA_FOLDER / 'map.map')
+        print('Loaded!')
 
-      self.selected_tile.render_preview(self.window.display, self.mx, self.my,
-                                        self.variant)
+      self.selected_tile.render_preview(
+          self.window.display,
+          self.mx,
+          self.my,
+          self.variant,
+      )
 
 
 if __name__ == '__main__':
