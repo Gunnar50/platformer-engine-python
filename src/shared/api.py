@@ -5,6 +5,7 @@ from typing import Iterator
 import pydantic
 import pygame
 
+from src.shared import serialisers
 from src.shared.types import Coordinate
 
 
@@ -50,3 +51,14 @@ class TileType(enum.Enum):
   GRASS = 'grass'
   DIRT = 'dirt'
   BUSH = 'bush'
+
+
+class TileImport(pydantic.BaseModel):
+  position: Position
+  variant: int
+  layer: int
+  tile_type: TileType
+
+
+class WorldGridImport(pydantic.BaseModel):
+  tile_map: list[TileImport]

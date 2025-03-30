@@ -45,13 +45,15 @@ class WorldGrid(GameComponent, serialisers.Serialiser):
 
   def load(self, file_path: pathlib.Path) -> None:
     self.reset()
-    map_data = io.load_json(file_path)
-    for tile_data in map_data['tile_map']:
-      x, y = tile_data['position'][0], tile_data['position'][1]
-      layer = tile_data['layer']
-      variant = tile_data['variant']
-      self.create_tile(x, y, api.TileType(tile_data['tile_type']), variant,
-                       layer)
+    world_grid_data = io.load_model_from_json(file_path, api.WorldGridImport)
+    for tile_data in world_grid_data.tile_map:
+      self.create_tile(
+          tile_data.position.x,
+          tile_data.position.y,
+          tile_data.tile_type,
+          tile_data.variant,
+          tile_data.layer,
+      )
 
   def setup_grid(self):
     for i in range(10):
