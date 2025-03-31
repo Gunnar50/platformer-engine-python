@@ -1,0 +1,8 @@
+{
+  "name": "player",
+  "group": "entity",
+  "layer": 0,
+  "images": [
+    "player.png"
+  ]
+}

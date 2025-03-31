@@ -1,6 +1,6 @@
 import dataclasses
 import enum
-from typing import Iterator
+from typing import Iterator, Self
 
 import pydantic
 import pygame
@@ -36,15 +36,27 @@ class InputConfig(pydantic.BaseModel):
 
 
 @dataclasses.dataclass
-class Position(serialisers.Serialiser):
+class Movement:
   x: int
   y: int
 
-  def export(self) -> dict[str, int]:
-    return {'x': self.x, 'y': self.y}
+  def __add__(self, other: 'Movement') -> Self:
+    return type(self)(self.x + other.x, self.y + other.y)
+
+
+@dataclasses.dataclass
+class Velocity(Movement):
+  pass
+
+
+@dataclasses.dataclass
+class Position(Movement, serialisers.Serialiser):
 
   def __iter__(self) -> Iterator[int]:
     return iter((self.x, self.y))
+
+  def export(self) -> dict[str, int]:
+    return {'x': self.x, 'y': self.y}
 
 
 class TileType(enum.Enum):
