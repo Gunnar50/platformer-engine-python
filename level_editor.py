@@ -39,31 +39,43 @@ class LevelEditor:
       self.mx, self.my = self.input.mouse.get_position()
 
       # Adding and removing tiles
-      if self.input.holding(key_mappings.EditorMapping.MOUSE_RIGHT):
-        self.world.remove_tile(self.mx, self.my, self.layer)
+      self.add_tiles(key_mappings.EditorMapping.MOUSE_LEFT)
+      self.remove_tiles(key_mappings.EditorMapping.MOUSE_RIGHT)
 
-      if self.input.holding(key_mappings.EditorMapping.MOUSE_LEFT):
-        self.world.create_tile(self.mx, self.my, self.current_tile_type,
-                               self.variant, self.layer)
+      # Save and load map
+      self.save(key_mappings.EditorMapping.LEFT,
+                EngineFiles.DATA_FOLDER / 'map.map')
+      self.load(key_mappings.EditorMapping.RIGHT,
+                EngineFiles.DATA_FOLDER / 'map.map')
 
       # TODO: Find a better way to handle multiple key presses
       # Update tile type if control + scroll
-      if self.input.holding(key_mappings.EditorMapping.CONTROL):
-        if self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_UP):
-          self.tile_type_index = (self.tile_type_index + 1) % len(
-              self.tile_types)
-        elif self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_DOWN):
-          self.tile_type_index = (self.tile_type_index - 1) % len(
-              self.tile_types)
+      if self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_UP,
+                            modifier=key_mappings.EditorMapping.CONTROL):
+        self.tile_type_index = (self.tile_type_index + 1) % len(self.tile_types)
         self.variant = 0
         self.update_tile = True
-      else:
-        # Update variant
-        if self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_UP):
-          self.variant = (self.variant + 1) % len(self.selected_tile.images)
-        elif self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_DOWN):
-          self.variant = (self.variant - 1) % len(self.selected_tile.images)
+
+      if self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_UP):
+        self.variant = (self.variant + 1) % len(self.selected_tile.images)
         self.update_tile = True
+
+      # if self.input.holding(key_mappings.EditorMapping.CONTROL):
+      #   if self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_UP):
+      #     self.tile_type_index = (self.tile_type_index + 1) % len(
+      #         self.tile_types)
+      #   elif self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_DOWN):
+      #     self.tile_type_index = (self.tile_type_index - 1) % len(
+      #         self.tile_types)
+      #   self.variant = 0
+      #   self.update_tile = True
+      # else:
+      #   # Update variant
+      #   if self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_UP):
+      #     self.variant = (self.variant + 1) % len(self.selected_tile.images)
+      #   elif self.input.pressed(key_mappings.EditorMapping.MOUSE_SCROLL_DOWN):
+      #     self.variant = (self.variant - 1) % len(self.selected_tile.images)
+      #   self.update_tile = True
 
       if self.update_tile:
         self.current_tile_type = self.tile_types[self.tile_type_index]
@@ -71,19 +83,31 @@ class LevelEditor:
             self.current_tile_type.value)
         self.update_tile = False
 
-      if self.input.pressed(key_mappings.EditorMapping.RIGHT):
-        self.scene.world_grid.save(EngineFiles.DATA_FOLDER / 'map.map')
-        print('Saved!')
-      elif self.input.pressed(key_mappings.EditorMapping.LEFT):
-        self.scene.world_grid.load(EngineFiles.DATA_FOLDER / 'map.map')
-        print('Loaded!')
-
       self.selected_tile.render_preview(
           self.window.display,
           self.mx,
           self.my,
           self.variant,
       )
+
+  def add_tiles(self, key: key_mappings.EditorMapping):
+    if self.input.holding(key):
+      self.world.create_tile(self.mx, self.my, self.current_tile_type,
+                             self.variant, self.layer)
+
+  def remove_tiles(self, key: key_mappings.EditorMapping):
+    if self.input.holding(key):
+      self.world.remove_tile(self.mx, self.my, self.layer)
+
+  def save(self, key: key_mappings.EditorMapping, file_path: pathlib.Path):
+    if self.input.pressed(key):
+      self.scene.world_grid.save(file_path)
+      print('Saved!')
+
+  def load(self, key: key_mappings.EditorMapping, file_path: pathlib.Path):
+    if self.input.pressed(key):
+      self.scene.world_grid.load(file_path)
+      print('Loaded!')
 
 
 if __name__ == '__main__':

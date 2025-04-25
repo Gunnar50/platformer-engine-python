@@ -1,7 +1,7 @@
 import pathlib
 import sys
 import time
-from typing import Type
+from typing import Optional, Type
 
 import pygame
 
@@ -54,12 +54,25 @@ class Input(SystemComponent):
             mapping.label, mapping.type, mapping.input_name,
             mapping.input_id) for mapping in self.config.config
     }
+    self.mapping_type = mapping_type
+    self.modifier_keys = []
 
     self.keyboard = Keyboard(self.input)
     self.mouse = Mouse(self.input)
 
-  def pressed(self, key: key_mappings.MappingBase) -> bool:
-    return self.input[key].just_pressed if key in self.input else False
+  def pressed(
+      self,
+      key: key_mappings.MappingBase,
+      modifier: Optional[key_mappings.MappingBase] = None,
+  ) -> bool:
+    if modifier:
+      if modifier in self.modifier_keys:
+        return self.input[key].just_pressed if key in self.input else False
+    else:
+      if not self.modifier_keys:
+        return self.input[key].just_pressed if key in self.input else False
+
+    return False
 
   def holding(self, key: key_mappings.MappingBase) -> bool:
     return self.input[key].pressed if key in self.input else False
@@ -70,6 +83,12 @@ class Input(SystemComponent):
   def update(self):
     for state in self.input.values():
       state.update()
+
+    self.modifier_keys = [
+        self.mapping_type(state.label)
+        for state in self.input.values()
+        if state.pressed
+    ]
 
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
