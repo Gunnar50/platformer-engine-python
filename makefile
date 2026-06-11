@@ -7,15 +7,11 @@ install-dev:
 check-types:
 	./scripts/check_types.sh .
 
-check-imports:
-	./scripts/check_imports.sh --check-only
-
 check-styles:
-	./scripts/check_styles.sh --diff
+	./scripts/check.sh
 
 fix:
-	./scripts/check_styles.sh --in-place
-	./scripts/check_imports.sh
+	./scripts/fix.sh
 
 clean:
 	rm -rf __pycache__ *.pyc
