@@ -1,6 +1,6 @@
 import abc
 from collections.abc import Iterable, Iterator
-from typing import Generic, TypeVar
+from typing import TypeVar
 
 from src.shared import exceptions
 from src.shared.debug import LOGGER
@@ -15,7 +15,7 @@ class Registrable(abc.ABC):
     pass
 
 
-class HashRegistry(Generic[RegistrableType], Iterable):
+class HashRegistry(Iterable[RegistrableType]):
   def __init__(self, registry_name: str = 'hash'):
     self.registry_name = registry_name
     self.map: dict[str, RegistrableType] = {}
