@@ -8,7 +8,6 @@ class State(abc.ABC):
 
 
 class QueuedState:
-
   def __init__(self, state: State, wait_for_request: bool) -> None:
     self.state = state
     self.wait_for_req = wait_for_request
@@ -40,7 +39,7 @@ class StateManager(SystemComponent):
 
   def clean_queue(self):
     self.state_queue = [
-        state for state in self.state_queue if state.wait_for_req
+      state for state in self.state_queue if state.wait_for_req
     ]
 
   def switch_state(self, new_state: State):

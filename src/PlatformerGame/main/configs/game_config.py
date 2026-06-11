@@ -5,6 +5,7 @@ from src.shared.version import Version
 
 class GameConfig(EngineConfigs):
   """Game Configs"""
+
   version = Version(0, 0, 0)
   game_speed = 1
   cheats = True

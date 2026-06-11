@@ -1,11 +1,10 @@
-from src.PlatformerGame.repository.blueprint_loader import (EntityLoader,
-                                                            ItemLoader,
-                                                            TilesLoader)
+from src.PlatformerGame.repository.blueprint_loader import EntityLoader
+from src.PlatformerGame.repository.blueprint_loader import ItemLoader
+from src.PlatformerGame.repository.blueprint_loader import TilesLoader
 
 
 # Game Repository
 class BlueprintDatabase:
-
   def __init__(self) -> None:
     # self.entities = EntityBlueprint()
     # HashRegistry it implements a iterable containing instances of Blueprint

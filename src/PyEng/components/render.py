@@ -7,6 +7,7 @@ from src.shared.types import Coordinate
 
 class Render(SystemComponent):
   """CURRENTLY NOT IN USE"""
+
   """Render all the elements in the Window"""
 
   def __init__(self) -> None:
@@ -14,11 +15,11 @@ class Render(SystemComponent):
     self.render_group: list[api.RenderObjects] = []
 
   def add_to_render_group(
-      self,
-      img: pygame.Surface,
-      pos: Coordinate,
-      dest_surf: pygame.Surface,
-      layer: int,
+    self,
+    img: pygame.Surface,
+    pos: Coordinate,
+    dest_surf: pygame.Surface,
+    layer: int,
   ) -> None:
     """Function to add elements to be rendered into a queue
 
@@ -29,12 +30,13 @@ class Render(SystemComponent):
         layer (int, optional): The layer (order) to render to.
     """
     self.render_group.append(
-        api.RenderObjects(
-            image=img,
-            position=pos,
-            destination_surface=dest_surf,
-            layer=layer,
-        ))
+      api.RenderObjects(
+        image=img,
+        position=pos,
+        destination_surface=dest_surf,
+        layer=layer,
+      )
+    )
 
   def render(self):
     """Render every element in the render group to its respective destination surface"""

@@ -15,14 +15,14 @@ class Window(SystemComponent):
   """
 
   def __init__(
-      self,
-      window_width: int,
-      window_height: int,
-      fullscreen: int,
-      caption: str,
-      fps: int,
-      vsync: bool,
-      background_colour: tuple[int, int, int],
+    self,
+    window_width: int,
+    window_height: int,
+    fullscreen: int,
+    caption: str,
+    fps: int,
+    vsync: bool,
+    background_colour: tuple[int, int, int],
   ):
     SystemComponent.__init__(self)
     pygame.init()
@@ -32,14 +32,18 @@ class Window(SystemComponent):
     self.window_height = window_height
     self.start_time = time.time()
 
-    self.screen = pygame.display.set_mode(size=(window_width, window_height),
-                                          flags=fullscreen,
-                                          vsync=vsync)
+    self.screen = pygame.display.set_mode(
+      size=(window_width, window_height), flags=fullscreen, vsync=vsync
+    )
     self.display = pygame.Surface(
-        (window_width // BuildConfig.scale_factor,
-         window_height // BuildConfig.scale_factor)).convert_alpha()
+      (
+        window_width // BuildConfig.scale_factor,
+        window_height // BuildConfig.scale_factor,
+      )
+    ).convert_alpha()
     self.debug_display = pygame.Surface(
-        (window_width, window_height)).convert_alpha()
+      (window_width, window_height)
+    ).convert_alpha()
 
     pygame.display.set_caption(caption)
     self.clock = pygame.time.Clock()
@@ -67,8 +71,9 @@ class Window(SystemComponent):
     self.debug_display.fill((0, 0, 0, 0))
 
   def swap_buffers(self):
-    scaled_display = pygame.transform.scale(self.display,
-                                            self.screen.get_size())
+    scaled_display = pygame.transform.scale(
+      self.display, self.screen.get_size()
+    )
     self.screen.blit(scaled_display, (0, 0))
     self.screen.blit(self.debug_display, (0, 0))
     pygame.display.flip()

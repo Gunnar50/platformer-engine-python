@@ -3,6 +3,7 @@ from src.PlatformerGame.main.configs.game_config import GameConfig
 
 class BuildConfig(GameConfig):
   """Build Configs"""
+
   window_width = 1280
   window_height = 720
   title = f'Platform Engine - Version: {GameConfig.version}'
@@ -20,6 +21,7 @@ class BuildConfig(GameConfig):
 
 class EditorConfig(GameConfig):
   """Level Editor Configs"""
+
   window_width = 1280
   window_height = 720
   title = f'Level Editor - Version: {GameConfig.version}'

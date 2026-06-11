@@ -8,7 +8,6 @@ import socket
 import sys
 import traceback
 from types import TracebackType
-from typing import Optional, Type
 
 from src.PyEng.components.components import SystemComponent
 from src.PyEng.main.engine_files import EngineFiles
@@ -20,8 +19,8 @@ class ErrorManager(SystemComponent):
   _logged_exceptions: set[int]
 
   def __init__(
-      self,
-      log_dir: pathlib.Path = EngineFiles.ROOT_FOLDER / 'DefaultErrorLogs',
+    self,
+    log_dir: pathlib.Path = EngineFiles.ROOT_FOLDER / 'DefaultErrorLogs',
   ):
     """
     Initialize the error manager with a directory for log files.
@@ -49,7 +48,9 @@ class ErrorManager(SystemComponent):
     safe_error_name = re.sub(r'[^a-zA-Z0-9]', '', error_name)
 
     # Create log filename with date, error name and a random number at the end
-    log_filename = f'{current_date}_{safe_error_name}_{random.randint(1000, 9999)}.log'
+    log_filename = (
+      f'{current_date}_{safe_error_name}_{random.randint(1000, 9999)}.log'
+    )
     log_path = ErrorManager._log_directory / log_filename
 
     # Create a new logger
@@ -75,13 +76,13 @@ class ErrorManager(SystemComponent):
 
   @staticmethod
   def handle_exception(
-      exc_type: Type[BaseException],
-      exc_value: BaseException,
-      exc_traceback: Optional[TracebackType],
+    exc_type: type[BaseException],
+    exc_value: BaseException,
+    exc_traceback: TracebackType | None,
   ) -> None:
     """
     Handle uncaught exceptions and log them to appropriate files.
-    
+
     Args:
         exc_type: The exception class
         exc_value: The exception instance
@@ -104,8 +105,8 @@ class ErrorManager(SystemComponent):
       error_header = f'UNCAUGHT EXCEPTION: {error_name}\n'
 
     error_msg = ErrorManager.format_message(
-        error_header,
-        exc_value,
+      error_header,
+      exc_value,
     )
 
     # Log the exception
@@ -114,23 +115,24 @@ class ErrorManager(SystemComponent):
     # Show the normal Python error in the console
     sys.__excepthook__(exc_type, exc_value, exc_traceback)
     print('=' * 80)
-    print(f'Critical error occurred. Details logged to {log_path}',
-          file=sys.stderr)
+    print(
+      f'Critical error occurred. Details logged to {log_path}', file=sys.stderr
+    )
 
   @staticmethod
   def _get_system_info() -> dict:
     return {
-        'Timestamp': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'Platform': platform.platform(),
-        'Python Version': sys.version.split()[0],
-        'Hostname': socket.gethostname(),
+      'Timestamp': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+      'Platform': platform.platform(),
+      'Python Version': sys.version.split()[0],
+      'Hostname': socket.gethostname(),
     }
 
   @staticmethod
   def log_error(
-      exception: Exception,
-      error_name: Optional[str] = None,
-      context: Optional[dict] = None,
+    exception: Exception,
+    error_name: str | None = None,
+    context: dict | None = None,
   ) -> None:
     """
     Manually log an error with custom message and optional exception.
@@ -149,9 +151,8 @@ class ErrorManager(SystemComponent):
     logger, _ = ErrorManager._create_logger(error_name)
 
     error_msg = ErrorManager.format_message(
-        f'MANUAL CAUGHT EXCEPTION: {error_name}\n',
-        exception,
-        context,
+      f'MANUAL CAUGHT EXCEPTION: {error_name}\n',
+      exception,
     )
 
     # Log the error
@@ -163,8 +164,8 @@ class ErrorManager(SystemComponent):
 
   @staticmethod
   def format_message(
-      error_msg: str,
-      exception: BaseException,
+    error_msg: str,
+    exception: BaseException,
   ) -> str:
     message = str(exception)
     if not message:
@@ -190,8 +191,9 @@ class ErrorManager(SystemComponent):
     error_msg += '=' * 80 + '\n'
 
     if exception.__traceback__:
-      traceback_lines = traceback.format_exception(type(exception), exception,
-                                                   exception.__traceback__)
+      traceback_lines = traceback.format_exception(
+        type(exception), exception, exception.__traceback__
+      )
       traceback_text = ''.join(traceback_lines)
       error_msg += 'TRACEBACK:\n'
       error_msg += traceback_text

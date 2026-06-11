@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any, Optional
+from typing import Any, TYPE_CHECKING
 
 from src.shared import exceptions
 from src.shared.debug import LOGGER
@@ -12,9 +12,10 @@ if TYPE_CHECKING:
 
 class ComponentManager:  # Singleton
   """ComponentsManager
-  
+
   This is a singleton component that handles all the system and game components
   """
+
   __instance: 'ComponentManager | None' = None
 
   def __new__(cls, *args, **kwargs):
@@ -34,13 +35,15 @@ class ComponentManager:  # Singleton
         self.system_components_by_name[component.class_name] = component
       else:
         raise exceptions.ComponentDuplicateError(
-            f'Duplicate system component: {component.class_name}')
+          f'Duplicate system component: {component.class_name}'
+        )
 
     elif isinstance(component, GameComponent):
       self.game_components_by_name[component.class_name].append(component)
     else:
       raise exceptions.ComponentNotFoundError(
-          f'Trying to add non existent component: {component}')
+        f'Trying to add non existent component: {component}'
+      )
 
   def update(self) -> None:
     for component in self.system_components_by_name.values():
@@ -53,7 +56,8 @@ class ComponentManager:  # Singleton
   def get_by_class(self, class_name: str) -> Any:
     if class_name.lower() not in self.system_components_by_name.keys():
       raise exceptions.ComponentNotFoundError(
-          f'Class name not found: {class_name}')
+        f'Class name not found: {class_name}'
+      )
 
     component = self.system_components_by_name[class_name.lower()]
     return component
@@ -86,7 +90,7 @@ class ComponentManager:  # Singleton
 class Component:
   components_manager = ComponentManager()
 
-  def __init__(self, custom_id: Optional[int] = None, add=True):
+  def __init__(self, custom_id: int | None = None, add=True):
     self.custom_id = custom_id
     self.class_name = self.__class__.__name__.lower()
     if add:
@@ -94,15 +98,16 @@ class Component:
 
     # LOGGER.info(f"Setting up: {self.name}")
 
-  def update(self):
+  def update(self) -> None:
     pass
 
 
 class SystemComponent(Component):  # Singleton
   """System components that are singletons.
-  
+
   Render, Camera, Inputs, Assets, etc.
   """
+
   __instance = None
 
   def __new__(cls, *args, **kwargs):
@@ -118,9 +123,8 @@ class SystemComponent(Component):  # Singleton
 
 
 class GameComponent(Component):
-
   def __init__(self, add=True):
     Component.__init__(self)
 
-  def __repr__(self):
+  def __repr__(self) -> str:
     return f"Game Component: '{self.__class__.__name__}()'"

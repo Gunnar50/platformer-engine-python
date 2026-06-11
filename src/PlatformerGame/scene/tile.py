@@ -1,10 +1,11 @@
 import enum
-from typing import TYPE_CHECKING, Optional
+from typing import Optional, TYPE_CHECKING
 
 import pygame
 
 from src.PlatformerGame.main.configs.build_config import BuildConfig
-from src.shared import api, serialisers
+from src.shared import api
+from src.shared import serialisers
 
 if TYPE_CHECKING:
   from src.PlatformerGame.repository.game_components import TileBlueprint
@@ -30,25 +31,23 @@ class Direction(enum.Enum):
 
 
 class GameObject:
-
   def __init__(
-      self,
-      position: api.Position,
-      world_grid: 'WorldGrid',
+    self,
+    position: api.Position,
+    world_grid: 'WorldGrid',
   ) -> None:
     self.position = position
     self.grid = world_grid
 
 
 class Tile(GameObject, serialisers.Serialiser):
-
   def __init__(
-      self,
-      position: api.Position,
-      world_grid: 'WorldGrid',
-      components: 'TileBlueprint',
-      variant: int,
-      layer: int,
+    self,
+    position: api.Position,
+    world_grid: 'WorldGrid',
+    components: 'TileBlueprint',
+    variant: int,
+    layer: int,
   ) -> None:
     GameObject.__init__(self, position, world_grid)
     self.components = components
@@ -57,10 +56,10 @@ class Tile(GameObject, serialisers.Serialiser):
 
   def get_neighbours(self) -> list[Optional['Tile']]:
     return [
-        self.get_neighbour(Direction.NORTH),
-        self.get_neighbour(Direction.EAST),
-        self.get_neighbour(Direction.SOUTH),
-        self.get_neighbour(Direction.WEST),
+      self.get_neighbour(Direction.NORTH),
+      self.get_neighbour(Direction.EAST),
+      self.get_neighbour(Direction.SOUTH),
+      self.get_neighbour(Direction.WEST),
     ]
 
   def get_neighbour(self, direction: Direction) -> Optional['Tile']:
@@ -80,19 +79,19 @@ class Tile(GameObject, serialisers.Serialiser):
 
   def render_tile(self, screen: pygame.Surface) -> None:
     screen.blit(
-        self.components.images[self.variant],
-        (
-            self.position.x * BuildConfig.tile_width,
-            self.position.y * BuildConfig.tile_height,
-        ),
+      self.components.images[self.variant],
+      (
+        self.position.x * BuildConfig.tile_width,
+        self.position.y * BuildConfig.tile_height,
+      ),
     )
 
   def export(self):
     return {
-        'position': self.position,
-        'variant': self.variant,
-        'layer': self.layer,
-        'tile_type': self.components.name,
+      'position': self.position,
+      'variant': self.variant,
+      'layer': self.layer,
+      'tile_type': self.components.name,
     }
 
   def __str__(self) -> str:

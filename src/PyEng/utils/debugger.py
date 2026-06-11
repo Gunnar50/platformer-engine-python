@@ -6,7 +6,6 @@ from src.PyEng.components.components import SystemComponent
 
 
 class Debugger(SystemComponent):
-
   def __init__(self, debug: bool = False) -> None:
     SystemComponent.__init__(self)
     self.debug: dict = {}
@@ -16,8 +15,9 @@ class Debugger(SystemComponent):
 
   def render_info(self):
     for i, key in enumerate(self.debug):
-      text = self.font.render(f'{key}:{self.debug[key]}', True, (255, 255, 255),
-                              (0, 0, 0))
+      text = self.font.render(
+        f'{key}:{self.debug[key]}', True, (255, 255, 255), (0, 0, 0)
+      )
       text_rect = text.get_rect()
       text_rect.x = 0
       text_rect.y = 20 * i

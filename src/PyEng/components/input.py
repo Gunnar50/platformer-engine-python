@@ -1,23 +1,23 @@
 import pathlib
 import sys
 import time
-from typing import Optional, Type
 
 import pygame
 
 from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PyEng.components.components import SystemComponent
-from src.shared import api, io, key_mappings
+from src.shared import api
+from src.shared import io
+from src.shared import key_mappings
 
 
 class InputState:
-
   def __init__(
-      self,
-      label: str,
-      type: api.InputType,
-      input_name: str,
-      input_id: int,
+    self,
+    label: str,
+    type: api.InputType,
+    input_name: str,
+    input_id: int,
   ):
     self.label = label
     self.type = type
@@ -44,15 +44,18 @@ class InputState:
 
 
 class Input(SystemComponent):
-
-  def __init__(self, key_mappings_path: pathlib.Path,
-               mapping_type: Type[key_mappings.MappingBase]):
+  def __init__(
+    self,
+    key_mappings_path: pathlib.Path,
+    mapping_type: type[key_mappings.MappingBase],
+  ):
     SystemComponent.__init__(self)
     self.config = io.load_model_from_json(key_mappings_path, api.InputConfig)
     self.input = {
-        mapping_type(mapping.label): InputState(
-            mapping.label, mapping.type, mapping.input_name,
-            mapping.input_id) for mapping in self.config.config
+      mapping_type(mapping.label): InputState(
+        mapping.label, mapping.type, mapping.input_name, mapping.input_id
+      )
+      for mapping in self.config.config
     }
     self.mapping_type = mapping_type
     self.modifier_keys = []
@@ -61,9 +64,9 @@ class Input(SystemComponent):
     self.mouse = Mouse(self.input)
 
   def pressed(
-      self,
-      key: key_mappings.MappingBase,
-      modifier: Optional[key_mappings.MappingBase] = None,
+    self,
+    key: key_mappings.MappingBase,
+    modifier: key_mappings.MappingBase | None = None,
   ) -> bool:
     if modifier:
       if modifier in self.modifier_keys:
@@ -85,9 +88,9 @@ class Input(SystemComponent):
       state.update()
 
     self.modifier_keys = [
-        self.mapping_type(state.label)
-        for state in self.input.values()
-        if state.pressed
+      self.mapping_type(state.label)
+      for state in self.input.values()
+      if state.pressed
     ]
 
     for event in pygame.event.get():
@@ -100,7 +103,6 @@ class Input(SystemComponent):
 
 
 class Keyboard:
-
   def __init__(self, input_config: dict[key_mappings.MappingBase, InputState]):
     self.input = input_config
 
@@ -121,7 +123,6 @@ class Keyboard:
 
 
 class Mouse:
-
   def __init__(self, input_config: dict[key_mappings.MappingBase, InputState]):
     self.input = input_config
     self.position = api.Position(0, 0)
@@ -129,13 +130,16 @@ class Mouse:
     self.movement = api.Position(0, 0)
 
   def get_position(self) -> api.Position:
-    return api.Position(self.position.x // BuildConfig.tile_width,
-                        self.position.y // BuildConfig.tile_height)
+    return api.Position(
+      self.position.x // BuildConfig.tile_width,
+      self.position.y // BuildConfig.tile_height,
+    )
 
   def update(self, event: pygame.event.Event):
     mx, my = pygame.mouse.get_pos()
-    self.position = api.Position(mx // BuildConfig.scale_factor,
-                                 my // BuildConfig.scale_factor)
+    self.position = api.Position(
+      mx // BuildConfig.scale_factor, my // BuildConfig.scale_factor
+    )
     self.ui_x, self.ui_y = self.position.x // 2, self.position.y // 2
 
     if event.type == pygame.MOUSEBUTTONDOWN:

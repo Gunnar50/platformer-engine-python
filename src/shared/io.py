@@ -2,12 +2,13 @@ import dataclasses
 import enum
 import json
 import pathlib
-from typing import Any, Type, TypeVar, cast, get_origin
+from typing import Any, cast, get_origin, TypeVar
 
 import pydantic
 import pygame
 
-from src.shared import exceptions, serialisers
+from src.shared import exceptions
+from src.shared import serialisers
 from src.shared.debug import LOGGER
 
 BlueprintType = TypeVar('BlueprintType')
@@ -24,7 +25,7 @@ def export_data(data: Any) -> Any:
   elif isinstance(data, serialisers.Serialiser):
     return export_data(data.export())
 
-  elif (isinstance(data, (int, str, float, bool))):
+  elif isinstance(data, (int, str, float, bool)):
     return data
 
   return None
@@ -42,22 +43,24 @@ def write_json(file_path: pathlib.Path, data: Any) -> None:
 
 def load_json(file_path: pathlib.Path) -> Any:
   if file_path.exists():
-    with open(file_path, 'r') as f:
+    with open(file_path) as f:
       return json.load(f)
   else:
     raise exceptions.FilePathNotFound(
-        f'The following file path was not found: {file_path}')
+      f'The following file path was not found: {file_path}'
+    )
 
 
-def load_model_from_json(file_path: pathlib.Path,
-                         model: Type[ModelType]) -> ModelType:
+def load_model_from_json(
+  file_path: pathlib.Path, model: type[ModelType]
+) -> ModelType:
   data = load_json(file_path)
   return model.model_validate(data)
 
 
 def get_data_model(
-    ParametersClass: Type[BlueprintType],
-    file_path: pathlib.Path,
+  ParametersClass: type[BlueprintType],
+  file_path: pathlib.Path,
 ) -> BlueprintType:
   if not dataclasses.is_dataclass(ParametersClass):
     raise exceptions.NotDataclass(f'"{ParametersClass}" is not a dataclass.')
@@ -76,8 +79,8 @@ def get_data_model(
       # Load the images into the blueprint
       elif attr == 'images' and isinstance(value, list):
         value = [
-            pygame.image.load(file_path.parent / image).convert_alpha()
-            for image in value
+          pygame.image.load(file_path.parent / image).convert_alpha()
+          for image in value
         ]
 
       # Check if we need to convert anything to a list
@@ -90,10 +93,10 @@ def get_data_model(
     result = ParametersClass(**values)
   except TypeError:
     context = {
-        'ParametersClass': ParametersClass,
-        'values': values,
+      'ParametersClass': ParametersClass,
+      'values': values,
     }
-    raise exceptions.FailedToGetDataModel(f'Error initialising model', context)
+    raise exceptions.FailedToGetDataModel('Error initialising model', context)
 
   if json_data:
     LOGGER.warning(f'Remaining data that could not be loaded: {json_data}')

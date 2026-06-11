@@ -1,5 +1,4 @@
 import pathlib
-from typing import TYPE_CHECKING, Optional
 
 import pygame
 
@@ -7,7 +6,9 @@ from src.PlatformerGame.main.configs.build_config import BuildConfig
 from src.PlatformerGame.scene.tile import Tile
 from src.PyEng.components.components import GameComponent
 from src.PyEng.main.engine import Engine
-from src.shared import api, io, serialisers
+from src.shared import api
+from src.shared import io
+from src.shared import serialisers
 
 
 class Scene(GameComponent):
@@ -26,7 +27,6 @@ class Scene(GameComponent):
 
 
 class WorldGrid(GameComponent, serialisers.Serialiser):
-
   def __init__(self, scene: Scene, world_size: int) -> None:
     GameComponent.__init__(self)
     self.tile_map: dict[tuple[int, int, int], Tile] = {}
@@ -48,11 +48,11 @@ class WorldGrid(GameComponent, serialisers.Serialiser):
     world_grid_data = io.load_model_from_json(file_path, api.WorldGridImport)
     for tile_data in world_grid_data.tile_map:
       self.create_tile(
-          tile_data.position.x,
-          tile_data.position.y,
-          tile_data.tile_type,
-          tile_data.variant,
-          tile_data.layer,
+        tile_data.position.x,
+        tile_data.position.y,
+        tile_data.tile_type,
+        tile_data.variant,
+        tile_data.layer,
       )
 
   def setup_grid(self):
@@ -62,23 +62,21 @@ class WorldGrid(GameComponent, serialisers.Serialiser):
       self.create_tile(10, 5 + i, api.TileType.DIRT, 0, 0)
 
   def create_tile(
-      self,
-      x: int,
-      y: int,
-      tile_type: api.TileType,
-      variant: int,
-      layer: int,
+    self,
+    x: int,
+    y: int,
+    tile_type: api.TileType,
+    variant: int,
+    layer: int,
   ) -> Tile:
     tile_bluprint = self.tile_blueprints.get(tile_type.value)
-    tile = tile_bluprint.create_instance(position_x=x,
-                                         position_y=y,
-                                         grid=self,
-                                         variant=variant,
-                                         layer=layer)
+    tile = tile_bluprint.create_instance(
+      position_x=x, position_y=y, grid=self, variant=variant, layer=layer
+    )
     self.add_tile(tile)
     return tile
 
-  def remove_tile(self, x: int, y: int, layer: int) -> Optional[Tile]:
+  def remove_tile(self, x: int, y: int, layer: int) -> Tile | None:
     if (x, y, layer) in self.tile_map:
       return self.tile_map.pop((x, y, layer))
     return None
@@ -86,23 +84,25 @@ class WorldGrid(GameComponent, serialisers.Serialiser):
   def add_tile(self, tile: Tile) -> None:
     self.tile_map.update({(tile.position.x, tile.position.y, tile.layer): tile})
 
-  def get_tile_at(self, x: float, y: float, layer: int) -> Optional[Tile]:
+  def get_tile_at(self, x: float, y: float, layer: int) -> Tile | None:
     if x > 0 and y > 0:
       return self.get_tile(int(x), int(y), layer)
     else:
       return None
 
-  def get_tile(self, x: int, y: int, layer: int) -> Optional[Tile]:
+  def get_tile(self, x: int, y: int, layer: int) -> Tile | None:
     return self.tile_map.get((x, y, layer))
 
   def draw_grid(self, screen: pygame.Surface):
     for x in range(0, BuildConfig.window_width, BuildConfig.tile_width):
-      pygame.draw.line(screen, (150, 150, 150), (x, 0),
-                       (x, BuildConfig.window_height))
+      pygame.draw.line(
+        screen, (150, 150, 150), (x, 0), (x, BuildConfig.window_height)
+      )
 
     for y in range(0, BuildConfig.window_height, BuildConfig.tile_height):
-      pygame.draw.line(screen, (150, 150, 150), (0, y),
-                       (BuildConfig.window_width, y))
+      pygame.draw.line(
+        screen, (150, 150, 150), (0, y), (BuildConfig.window_width, y)
+      )
 
   def render(self, screen: pygame.Surface) -> None:
     self.draw_grid(screen)

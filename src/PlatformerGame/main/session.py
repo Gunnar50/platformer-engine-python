@@ -3,7 +3,6 @@ from src.PyEng.components.components import GameComponent
 
 
 class GameSession(GameComponent):
-
   def __init__(self) -> None:
     self.scene = Scene()
 

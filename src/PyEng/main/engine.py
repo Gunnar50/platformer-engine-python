@@ -6,7 +6,8 @@ from src.PyEng.main.engine_config import EngineConfigs
 from src.PyEng.main.engine_files import EngineFiles
 from src.PyEng.utils.debugger import Debugger
 from src.PyEng.utils.error_manager import ErrorManager
-from src.shared import exceptions, key_mappings
+from src.shared import exceptions
+from src.shared import key_mappings
 
 
 class Engine:
@@ -41,7 +42,7 @@ class Engine:
   def check_assets_folder(self):
     if not EngineFiles.DATA_FOLDER.exists():
       raise exceptions.IllegalStateException(
-          f"Can't create engine - assets folder not found in root directory: {EngineFiles.ROOT_FOLDER}."
+        f"Can't create engine - assets folder not found in root directory: {EngineFiles.ROOT_FOLDER}."
       )
 
   def create_global_components(self, configs: type[EngineConfigs]):
@@ -53,23 +54,25 @@ class Engine:
   def create_engine_components(self, configs: type[EngineConfigs]):
     # Create engine components
     self.window = Window(
-        window_width=configs.window_width,
-        window_height=configs.window_height,
-        fullscreen=configs.fullscreen,
-        caption=configs.title,
-        fps=configs.fps,
-        vsync=configs.vsync,
-        background_colour=configs.background_colour,
+      window_width=configs.window_width,
+      window_height=configs.window_height,
+      fullscreen=configs.fullscreen,
+      caption=configs.title,
+      fps=configs.fps,
+      vsync=configs.vsync,
+      background_colour=configs.background_colour,
     )
 
     # Set up keyboard and mouse inputs
     if configs.is_editor:
-      self.input = Input(EngineFiles.EDITOR_MAPPINGS,
-                         key_mappings.EditorMapping)
+      self.input = Input(
+        EngineFiles.EDITOR_MAPPINGS, key_mappings.EditorMapping
+      )
     else:
       self.input = Input(EngineFiles.GAME_MAPPINGS, key_mappings.GameMapping)
-    self.state_manager = StateManager(configs.default_state,
-                                      configs.initial_state)
+    self.state_manager = StateManager(
+      configs.default_state, configs.initial_state
+    )
     # self.timer = FrameTimer(configs.fps)
 
     # Create UI
@@ -96,11 +99,12 @@ class Engine:
 
   @classmethod
   def create(
-      cls,
-      configs: type[EngineConfigs] = EngineConfigs.get_default_configs(),
+    cls,
+    configs: type[EngineConfigs] = EngineConfigs.get_default_configs(),
   ) -> 'Engine':
     if cls.__instance is not None:
       raise exceptions.IllegalStateException(
-          'Engine has already been initialised!')
+        'Engine has already been initialised!'
+      )
 
     return cls(configs)

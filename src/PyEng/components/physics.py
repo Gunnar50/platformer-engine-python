@@ -1,10 +1,11 @@
 import pygame
+
 from src.PyEng.components.components import GameComponent
-from src.shared.api import Position, Velocity
+from src.shared.api import Position
+from src.shared.api import Velocity
 
 
 class PhysicsEntity(GameComponent):
-
   def __init__(self, x: int, y: int, entity_type: str) -> None:
     GameComponent.__init__(self)
     self.position = Position(x, y)

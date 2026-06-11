@@ -1,6 +1,7 @@
+from collections.abc import Iterator
 import dataclasses
 import enum
-from typing import Iterator, Self
+from typing import Self
 
 import pydantic
 import pygame
@@ -51,7 +52,6 @@ class Velocity(Movement):
 
 @dataclasses.dataclass
 class Position(Movement, serialisers.Serialiser):
-
   def __iter__(self) -> Iterator[int]:
     return iter((self.x, self.y))
 

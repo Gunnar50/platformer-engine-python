@@ -5,8 +5,9 @@ from src.PyEng.components.state_manager import State
 
 
 class EnumABCMeta(enum.EnumMeta, abc.ABCMeta):
-  '''Combine EnumMeta and ABCMeta into a new metaclass
-  so GameState can inhert from Enum and State'''
+  """Combine EnumMeta and ABCMeta into a new metaclass
+  so GameState can inhert from Enum and State"""
+
   pass
 
 

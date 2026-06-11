@@ -1,53 +1,53 @@
-from typing import Any, Optional
+from typing import Any
 
 
 class ApplicationException(Exception):
   """Base class for all application exceptions."""
 
-  def __init__(self, message: str, context: Optional[dict[str, Any]] = None):
+  def __init__(self, message: str, context: dict[str, Any] | None = None):
     super().__init__(message)
     self.context = context
 
 
 class ComponentDuplicateError(ApplicationException):
-  '''Component duplicate error exception'''
+  """Component duplicate error exception"""
 
 
 class ComponentNotFoundError(ApplicationException):
-  '''Component does not exist or was not found exception'''
+  """Component does not exist or was not found exception"""
 
 
 class InvalidParameters(ApplicationException):
-  '''Raise when parameters are invilid'''
+  """Raise when parameters are invilid"""
 
 
 class FilePathNotFound(ApplicationException):
-  '''Raise if a file path is not found'''
+  """Raise if a file path is not found"""
 
 
 class IllegalStateException(ApplicationException):
-  '''Raised when a component has an illegal state eg. not being initialised'''
+  """Raised when a component has an illegal state eg. not being initialised"""
 
 
 class IllegalRegistryOverwrite(ApplicationException):
-  '''Raised when a registry is being overwritten'''
+  """Raised when a registry is being overwritten"""
 
 
 class RegistryNotFoundException(ApplicationException):
-  '''Raised when a registry is not found'''
+  """Raised when a registry is not found"""
 
 
 class InfoFileNotFound(ApplicationException):
-  '''Raised if a entity info file does not exist'''
+  """Raised if a entity info file does not exist"""
 
 
 class FailedToLoadBlueprint(ApplicationException):
-  '''Raise if a blueprint fails to load'''
+  """Raise if a blueprint fails to load"""
 
 
 class FailedToGetDataModel(ApplicationException):
-  '''Raise when data fails to load in specified model'''
+  """Raise when data fails to load in specified model"""
 
 
 class NotDataclass(ApplicationException):
-  '''Raise when the specified class is not a dataclass'''
+  """Raise when the specified class is not a dataclass"""

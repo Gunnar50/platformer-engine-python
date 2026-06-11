@@ -1,6 +1,6 @@
 import abc
-from collections.abc import Iterable
-from typing import Generic, Iterator, Optional, TypeVar
+from collections.abc import Iterable, Iterator
+from typing import Generic, TypeVar
 
 from src.shared import exceptions
 from src.shared.debug import LOGGER
@@ -10,26 +10,24 @@ RegistrableType = TypeVar('RegistrableType', bound='Registrable')
 
 
 class Registrable(abc.ABC):
-
   @abc.abstractmethod
   def get_name(self) -> str:
     pass
 
 
 class HashRegistry(Generic[RegistrableType], Iterable):
-
-  def __init__(self, registry_name: str = "hash"):
+  def __init__(self, registry_name: str = 'hash'):
     self.registry_name = registry_name
     self.map: dict[str, RegistrableType] = {}
 
   def register(self, item: RegistrableType) -> None:
     if item.get_name() in self.map:
       raise exceptions.IllegalRegistryOverwrite(
-          f'Registry Overwrite',
-          {
-              'registry': self.registry_name,
-              'item': item.get_name(),
-          },
+        'Registry Overwrite',
+        {
+          'registry': self.registry_name,
+          'item': item.get_name(),
+        },
       )
     else:
       self.map[item.get_name()] = item
@@ -38,18 +36,19 @@ class HashRegistry(Generic[RegistrableType], Iterable):
     for item in items:
       self.register(item)
 
-  def get_null(self, name: str) -> Optional[RegistrableType]:
+  def get_null(self, name: str) -> RegistrableType | None:
     item = self.map.get(name)
     if item is None:
       LOGGER.warning(
-          f"No entry found in {self.registry_name} registry with ID: {name}")
+        f'No entry found in {self.registry_name} registry with ID: {name}'
+      )
     return item
 
   def get(self, string_id: str) -> RegistrableType:
     item = self.get_null(string_id)
     if item is None:
       raise exceptions.RegistryNotFoundException(
-          f"No entry found in {self.registry_name} registry with ID: {string_id}"
+        f'No entry found in {self.registry_name} registry with ID: {string_id}'
       )
     return item
 

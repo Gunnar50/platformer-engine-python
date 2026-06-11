@@ -5,7 +5,6 @@ from src.shared import key_mappings
 
 
 class EngineTester:
-
   def __init__(self) -> None:
     self.engine = Engine.create()
 
@@ -18,7 +17,6 @@ class EngineTester:
 
 
 class GameApp:
-
   def __init__(self) -> None:
     self.engine = Engine.create(BuildConfig)
     self.game_manager = GameManager(self.engine)
@@ -38,7 +36,7 @@ class GameApp:
     # self.game_manager.clean_up()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   # EngineTester().run()
   GameApp().run()
   # GameApp()

@@ -9,7 +9,7 @@ output_path = pathlib.Path('src/shared/key_mappings.py')
 
 
 def load_json(file_path):
-  with open(file_path, 'r') as f:
+  with open(file_path) as f:
     return json.load(f)
 
 
@@ -32,16 +32,19 @@ def main():
 
   # Generate the enum classes as a string
   game_mapping_class = generate_class('GameMapping', game_mapping.get('config'))
-  editor_mapping_class = generate_class('EditorMapping',
-                                        editor_mapping.get('config'))
+  editor_mapping_class = generate_class(
+    'EditorMapping', editor_mapping.get('config')
+  )
   base_class = 'class MappingBase(enum.Enum):\n  pass'
 
-  updated_content = '\n'.join([
+  updated_content = '\n'.join(
+    [
       '# Auto generated from config files',
       '# Do not modify this file manually, instead update the mappings config file',
       '# Located at: data/config/*.json',
       'import enum',
-  ])
+    ]
+  )
   updated_content += f'\n\n\n{base_class}\n'
   updated_content += f'\n\n{game_mapping_class}\n'
   updated_content += f'\n\n{editor_mapping_class}\n'
